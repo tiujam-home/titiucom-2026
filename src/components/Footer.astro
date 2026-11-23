@@ -1,0 +1,84 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner section-inner">
+    <div class="footer__cta">
+      <h2 class="footer__title">Tehdäänkö jotain <span>yhdessä?</span></h2>
+      <div class="footer__contact">
+        <a href="mailto:hello@titiu.com" class="footer__email">hello@titiu.com</a>
+        <a href="/ota-yhteytta" class="btn btn--orange">Ota yhteyttä →</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© {year} Titiu Rajanto · Lohja, Etelä-Suomi</p>
+      <nav aria-label="Alavalikko">
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/tyonaytteet">Työnäytteet</a>
+        <a href="/tutustutaan">Tutustutaan</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--color-ink); color: var(--color-white); }
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 96px;
+    padding-top: 120px;
+    padding-bottom: 48px;
+  }
+  .footer__cta {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .footer__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 96px;
+    line-height: 96px;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+  }
+  .footer__title span { color: var(--color-orange); }
+  .footer__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  .footer__email {
+    font-size: 28px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-top: 28px;
+    border-top: 1px solid #5A5360;
+    font-size: 14px;
+  }
+  .footer__bottom p { color: #C9C3CD; }
+  .footer__bottom nav { display: flex; gap: 28px; }
+  .footer__bottom nav a { font-weight: 600; text-decoration: none; }
+
+  @media (max-width: 1024px) {
+    .footer__inner { padding-top: 80px; gap: 64px; }
+    .footer__cta { flex-direction: column; align-items: flex-start; }
+    .footer__contact { align-items: flex-start; }
+    .footer__title { font-size: 64px; line-height: 66px; }
+  }
+  @media (max-width: 640px) {
+    .footer__title { font-size: 48px; line-height: 50px; }
+    .footer__email { font-size: 22px; }
+    .footer__bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>

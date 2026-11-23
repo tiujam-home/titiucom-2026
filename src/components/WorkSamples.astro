@@ -1,0 +1,109 @@
+---
+const samples = [
+  {
+    title: 'e21:n yksityiset työnäytteet',
+    text: '12 vuotta käyttöliittymiä ja tuotekatalogeja rakennusalan ja teknisen kaupan yrityksille.',
+    tags: ['Palvelumuotoilu', 'Bootstrap 5.3', 'CX-muotoilu'],
+    color: 'var(--color-ink)',
+    href: '/tyonaytteet/e21',
+  },
+  {
+    title: 'Ystävyyden Majatalo',
+    text: 'Vuositulot 20 000 eurosta 120 000 euroon. Koko liiketoiminnan remontti palvelumuotoilun keinoin.',
+    tags: ['Palvelumuotoilu', 'Muutosjohtaminen', 'WordPress'],
+    color: 'var(--color-orange)',
+    href: '/tyonaytteet/ystavyyden-majatalo',
+  },
+  {
+    title: 'Logoja vuosien varrelta',
+    text: 'Logo on yksi palvelumuotoilun työkaluista. Brändisi on kokemus, jonka asiakkaasi saavat.',
+    tags: ['Logosuunnittelu', 'Brändistrategia'],
+    color: 'var(--color-plum)',
+    href: '/tyonaytteet/logot',
+  },
+];
+---
+
+<section class="work section-inner" id="tyonaytteet">
+  <div class="work__head">
+    <div class="work__heading">
+      <p class="eyebrow">Työnäytteet</p>
+      <h2 class="section-title">Teot puhuvat puolestaan</h2>
+    </div>
+    <a href="/tyonaytteet" class="work__all">Kaikki työnäytteet →</a>
+  </div>
+
+  <div class="work__grid">
+    {samples.map((s) => (
+      <a href={s.href} class="card">
+        {/* Replace this div with an <img> once you have project images */}
+        <div class="card__image" style={`background:${s.color}`}></div>
+        <h3>{s.title}</h3>
+        <p>{s.text}</p>
+        <span class="card__tags">{s.tags.join(' · ')}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .work {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    padding-block: 120px;
+  }
+  .work__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .work__heading { display: flex; flex-direction: column; gap: 16px; }
+  .work__all { font-size: 16px; font-weight: 600; }
+  .work__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+  }
+  .card__image {
+    height: 300px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+  }
+  .card:hover .card__image { transform: translateY(-4px); }
+  .card h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+    margin-bottom: 8px;
+  }
+  .card p {
+    font-size: 16px;
+    line-height: 26px;
+    color: var(--color-ink-soft);
+  }
+  .card__tags {
+    padding-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-plum);
+  }
+
+  @media (max-width: 1024px) {
+    .work { padding-block: 80px; }
+    .work__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .work__head { flex-direction: column; align-items: flex-start; }
+    .work__grid { grid-template-columns: 1fr; }
+    .card__image { height: 220px; }
+  }
+</style>

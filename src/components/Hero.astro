@@ -1,0 +1,68 @@
+---
+---
+
+<section class="hero section-inner">
+  <p class="eyebrow">UI/UX-suunnittelija · Front-end-kehittäjä</p>
+  <h1 class="hero__title">Hei, olen <span>Titiu Rajanto.</span></h1>
+  <div class="hero__bottom">
+    <p class="hero__lead">
+      Teen <strong>B2B-verkkopalveluista</strong> helppokäyttöisiä. Suunnittelen hyviksi
+      todetuilla käyttöliittymämalleilla, prototypoin HTML:llä ja CSS:llä ja rakennan
+      nopeammin tekoälyavusteisella kehityksellä.
+    </p>
+    <div class="hero__actions">
+      <a href="/tyonaytteet" class="btn btn--dark">Katso työnäytteet →</a>
+      <a href="/ota-yhteytta" class="btn btn--outline">Ota yhteyttä</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-top: 120px;
+    padding-bottom: 112px;
+  }
+  .hero__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 112px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    max-width: 1100px;
+  }
+  .hero__title span { color: var(--color-orange); }
+  .hero__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding-top: 16px;
+  }
+  .hero__lead {
+    font-size: 22px;
+    line-height: 34px;
+    max-width: 620px;
+  }
+  .hero__lead strong { color: var(--color-plum); }
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .hero { padding-top: 80px; padding-bottom: 80px; }
+    .hero__title { font-size: 80px; }
+    .hero__bottom { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding-top: 48px; padding-bottom: 64px; gap: 24px; }
+    .hero__title { font-size: 52px; }
+    .hero__lead { font-size: 18px; line-height: 28px; }
+    .hero__actions { flex-direction: column; width: 100%; }
+    .hero__actions .btn { text-align: center; }
+  }
+</style>

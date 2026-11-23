@@ -1,0 +1,81 @@
+/* Design tokens from the Paper file "Mindful breeze" */
+:root {
+  --color-ink: #3B363F;
+  --color-ink-soft: #4E4853;
+  --color-plum: #812C6C;
+  --color-plum-tint: #F4EEF2;
+  --color-plum-line: #D9C8D4;
+  --color-orange: #FF9C00;
+  --color-white: #FFFFFF;
+
+  --font-display: "Amaranth", system-ui, sans-serif;
+  --font-body: "Open Sans", system-ui, sans-serif;
+
+  --page-padding: 96px;
+  --container: 1440px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-white);
+}
+
+h1, h2, h3, p { margin: 0; }
+
+a { color: inherit; }
+
+img { max-width: 100%; display: block; }
+
+/* Shared helpers */
+.section-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--page-padding);
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 60px;
+  letter-spacing: -0.01em;
+}
+
+.btn {
+  display: inline-block;
+  padding: 18px 30px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn--dark { background: var(--color-ink); color: var(--color-white); }
+.btn--outline { border-color: var(--color-ink); color: var(--color-ink); }
+.btn--orange { background: var(--color-orange); color: var(--color-ink); font-weight: 700; }
+
+@media (max-width: 1024px) {
+  :root { --page-padding: 48px; }
+  .section-title { font-size: 44px; line-height: 48px; }
+}
+
+@media (max-width: 640px) {
+  :root { --page-padding: 24px; }
+  .section-title { font-size: 36px; line-height: 40px; }
+}
