@@ -86,7 +86,8 @@ const groups = [
   }
   @media (max-width: 900px) {
     .tools__head { padding: 32px var(--pad); }
-    .tools__title { font-size: 34px; }
+    .tools__title { font-size: clamp(26px, 8vw, 34px); }
+    .tools__title span { display: none; }
     .tools { grid-template-columns: 1fr; }
     .tools__col { border-right: none; border-bottom: var(--line); }
     .tools__col:last-child { border-bottom: none; }

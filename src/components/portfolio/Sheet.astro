@@ -8,13 +8,14 @@ interface Props {
   bottomLabel?: string;
   id?: string;
 }
+import { keepCase } from '../../utils/keepCase';
 
 const { label, bottomLabel, id } = Astro.props;
 ---
 
 <section class="sheet" id={id}>
   <div class="sheet__rail">
-    <span class="label sheet__label">{label}</span>
+    <span class="label sheet__label" set:html={keepCase(label)} />
     {bottomLabel && <span class="label sheet__label">{bottomLabel}</span>}
   </div>
   <div class="sheet__body">

@@ -111,19 +111,27 @@ const links = [
   @media (max-width: 1100px) {
     .tabs ul { gap: 24px; }
   }
+  /* Side-by-side layout: the name must leave room for the 400px side column,
+     or "Rajanto." no longer fits on one line */
+  @media (min-width: 1241px) {
+    .hero__name { font-size: min(8.8vw, 140px); }
+  }
   @media (max-width: 1240px) {
     .hero { flex-direction: column; align-items: flex-start; padding-top: 96px; }
     .hero__side { width: 100%; max-width: 560px; }
   }
   @media (max-width: 900px) {
-    .tabs { flex-direction: column; align-items: flex-start; gap: 12px; padding-left: var(--pad); }
-    .tabs ul {
-      gap: 20px;
-      overflow-x: auto;
-      max-width: 100%;
-      white-space: nowrap;
-      padding-bottom: 2px;
+    .tabs {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 10px var(--pad) 4px;
     }
+    .tabs__brand img { width: 36px; height: 36px; }
+    /* All links stay visible: they wrap onto a second row instead of scrolling off-screen */
+    .tabs ul { flex-wrap: wrap; column-gap: 18px; row-gap: 0; }
+    .tabs ul a { display: inline-block; padding: 8px 0; white-space: nowrap; }
+    .hero__link { display: inline-block; padding: 10px 0; }
     .hero {
       flex-direction: column;
       align-items: flex-start;
@@ -131,6 +139,9 @@ const links = [
       gap: 32px;
     }
     .hero__side { width: 100%; }
+  }
+  @media (max-width: 380px) {
+    .hero__name { font-size: 14vw; }
   }
 </style>
 

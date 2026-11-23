@@ -300,7 +300,7 @@ const statNotes = [
     <img class="banner" src={img('the-inn-feeling.jpg')} alt="Tunnelmakuva Majatalosta" width="2284" height="690" loading="lazy" />
     <div class="block">
       <p class="label kicker">Varsinainen työ</p>
-      <h2 class="display h2">Asiakaskokemuksen uudelleen&shy;suunnittelu</h2>
+      <h2 class="display h2">Asiakas&shy;kokemuksen uudelleen&shy;suunnittelu</h2>
     </div>
     <div class="split split--top">
       <div class="prose">
@@ -714,11 +714,12 @@ const statNotes = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px var(--pad);
+    padding: 6px var(--pad);
     border-bottom: var(--line);
     font-size: 16px;
   }
-  .back a { text-decoration: none; }
+  .back a { text-decoration: none; padding: 10px 0; }
+  .back .back__brand { padding: 0; }
   .back a:hover { color: var(--plum); }
   .back__brand { display: flex; align-items: center; }
   .back__brand img { display: block; width: 40px; height: 40px; }
@@ -757,7 +758,7 @@ const statNotes = [
   .h2 { font-size: clamp(36px, 5vw, 64px); line-height: 1; margin-bottom: 8px; }
   .h3 { font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; margin: 8px 0 4px; }
 
-  .prose { display: flex; flex-direction: column; gap: 16px; line-height: 28px; font-size: 17px; }
+  .prose { display: flex; flex-direction: column; gap: 16px; line-height: 28px; font-size: 17px; overflow-wrap: break-word; }
   .prose > * { max-width: 720px; }
   .prose--wide > * { max-width: 960px; }
   .prose a, .side a, .figure a, .photo-links a, .credits a, .acc a { color: var(--plum); }
@@ -926,7 +927,7 @@ const statNotes = [
   .quote--plum .quote__role { color: var(--plum-soft); }
 
   /* Stats */
-  .table-wrap { overflow-x: auto; margin-top: 16px; }
+  .table-wrap { position: relative; overflow-x: auto; margin-top: 16px; }
   .table-wrap:focus-visible { outline: 2px solid var(--orange); }
   .stats { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 16px; }
   .stats th, .stats td { padding: 12px 14px; text-align: left; border-bottom: var(--line); vertical-align: top; }
@@ -956,7 +957,10 @@ const statNotes = [
   }
   @media (max-width: 900px) {
     .intro { padding-top: 56px; }
-    .facts, .cols2, .split, .split--plan { grid-template-columns: 1fr; }
+    .intro__title { font-size: clamp(34px, 10vw, 64px); }
+    .h2 { font-size: clamp(28px, 8.5vw, 40px); }
+    .centered-title { font-size: clamp(18px, 5.4vw, 22px); }
+    .facts, .cols2, .split, .split--plan { grid-template-columns: minmax(0, 1fr); }
     .facts__col { border-right: none; border-bottom: var(--line); }
     .facts__col:last-child { border-bottom: none; }
     .col:first-child { border-right: none; border-bottom: var(--line); }

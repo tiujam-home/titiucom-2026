@@ -1,0 +1,76 @@
+---
+/**
+ * Screenshot or phone gallery for case pages. Images open in fancyBox
+ * (needs <Fancybox slot="head" /> on the page). Same `group` = one gallery.
+ */
+interface Props {
+  kind: 'shots' | 'phones';
+  group: string;
+  items: { file: string; caption: string }[];
+  base: string;
+  heroFirst?: boolean;
+  small?: boolean;
+}
+
+const { kind, group, items, base, heroFirst = false, small = false } = Astro.props;
+const src = (f: string) => `${base}${f}`;
+---
+
+{kind === 'shots' ? (
+  <div class:list={['shots', { 'shots--hero': heroFirst, 'shots--n3': heroFirst && items.length === 4 }]}>
+    {items.map((s) => (
+      <figure class="shot">
+        <a href={src(s.file)} data-fancybox={`case-${group}`} data-caption={s.caption}>
+          <span class="bar" aria-hidden="true"><i></i><i></i><i></i></span>
+          <img src={src(s.file)} alt={s.caption} loading="lazy" decoding="async" />
+        </a>
+        <figcaption>{s.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+) : (
+  <div class:list={['phones', { 'phones--small': small }]}>
+    {items.map((s) => (
+      <figure class="phone">
+        <a href={src(s.file)} data-fancybox={`case-${group}`} data-caption={s.caption}>
+          <img src={src(s.file)} alt={s.caption} loading="lazy" decoding="async" />
+        </a>
+        <figcaption>{s.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+)}
+
+<style>
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; margin-top: 24px; }
+  .shots--hero > .shot:first-child { grid-column: 1 / -1; }
+  .shots--n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .shot, .phone { display: flex; flex-direction: column; gap: 10px; margin: 0; }
+  .shot a, .phone a { display: block; cursor: zoom-in; text-decoration: none; }
+  .shot a:focus-visible, .phone a:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .shot a { border: var(--line); background: var(--paper); }
+  .bar { display: flex; gap: 6px; padding: 8px 10px; border-bottom: var(--line); background: var(--page); }
+  .bar i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--ink); }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: cover;
+    object-position: top;
+    transition: opacity 0.15s ease;
+  }
+  .shots--hero > .shot:first-child img { max-height: 720px; }
+  .shot a:hover img, .phone a:hover img { opacity: 0.9; }
+  figcaption { font-size: 15px; line-height: 22px; color: var(--muted); overflow-wrap: break-word; hyphens: auto; }
+
+  .phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+  .phones--small { grid-template-columns: repeat(3, minmax(0, 220px)); }
+  .phone img { display: block; width: 100%; height: auto; border: var(--line); border-radius: 18px; }
+
+  @media (max-width: 900px) {
+    .shots, .shots--n3 { grid-template-columns: 1fr; }
+    .phones, .phones--small { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

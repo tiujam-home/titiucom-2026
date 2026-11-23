@@ -52,6 +52,9 @@ a { color: inherit; }
   text-transform: uppercase;
   letter-spacing: -0.03em;
   line-height: 0.97;
+  /* Last resort on narrow screens: break a too-long word instead of overflowing.
+     Long Finnish compounds also get a soft hyphen (&shy;) at their natural joint. */
+  overflow-wrap: break-word;
 }
 .label {
   font-size: 16px;
@@ -84,3 +87,6 @@ a:hover .circle, .circle:hover { background: var(--orange); color: var(--paper);
   :root { --pad: 20px; --page-pad: 12px; }
   .page { gap: 16px; }
 }
+
+/* Keeps a brand name's own casing inside uppercase text (see src/utils/keepCase.ts) */
+.keep-case { text-transform: none; }

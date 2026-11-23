@@ -10,12 +10,11 @@ export interface Case {
 export const cases: Case[] = [
   {
     slug: 'e21',
-    title: 'e21:n yksityiset työnäytteet',
+    title: 'e21:n työnäytteet',
     tags: ['Palvelumuotoilu', 'Bootstrap 5.3', 'Dokumentointi', 'Projektinhallinta', 'Tiedonhallinta', 'CX-muotoilu'],
     intro: [
       'Työskentelin yhteensä 12 vuotta digitaalisena palvelumuotoilijana e21:llä. Päivittäinen työni keskittyi pääasiassa käyttöliittymien ja taittojen suunnitteluun suomalaisten rakennusalan ja teknisen kaupan yritysten verkkosivuille ja tuotekatalogeihin. Tämä on yksityinen portfolioni noilta vuosilta.',
     ],
-    note: 'Tämän puolen näkemiseen tarvitset salasanan. Laita minulle viestiä osoitteeseen hello@titiu.com, niin saat pääsyn.',
   },
   {
     slug: 'ystavyyden-majatalo',

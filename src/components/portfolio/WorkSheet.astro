@@ -1,6 +1,7 @@
 ---
 import Sheet from './Sheet.astro';
 import { cases } from '../../data/cases';
+import { keepCase } from '../../utils/keepCase';
 ---
 
 <Sheet label="Työnäytteet" id="tyonaytteet">
@@ -13,7 +14,7 @@ import { cases } from '../../data/cases';
       <li>
         <a href={`/tyonaytteet/${c.slug}`} class:list={['case', { 'case--featured': i === 1 }]}>
           <span class="case__num">{String(i + 1).padStart(2, '0')}</span>
-          <span class="display case__title">{c.title}</span>
+          <span class="display case__title" set:html={keepCase(c.title)} />
           <span class="case__tags">{c.tags.join(' · ')}</span>
           <span class:list={['circle', { 'circle--filled': i === 1 }]} aria-hidden="true">→</span>
         </a>
@@ -74,5 +75,8 @@ import { cases } from '../../data/cases';
     .case__title { grid-area: title; width: auto; font-size: 26px; }
     .case__tags { grid-area: tags; }
     .case .circle { grid-area: circle; width: 44px; height: 44px; }
+  }
+  @media (max-width: 380px) {
+    .work__title { font-size: 11vw; }
   }
 </style>

@@ -6,7 +6,7 @@ import { cases } from '../../data/cases';
 
 export function getStaticPaths() {
   // Cases with their own page file in this folder (e.g. ystavyyden-majatalo.astro)
-  const customPages = ['ystavyyden-majatalo'];
+  const customPages = ['ystavyyden-majatalo', 'e21', 'logot'];
   return cases
     .map((c, i) => ({ params: { slug: c.slug }, props: { item: c, index: i } }))
     .filter((p) => !customPages.includes(p.params.slug));
@@ -39,11 +39,12 @@ const number = String(index + 1).padStart(2, '0');
   .back {
     display: flex;
     justify-content: space-between;
-    padding: 16px var(--pad);
+    padding: 6px var(--pad);
     border-bottom: var(--line);
     font-size: 16px;
   }
-  .back a { text-decoration: none; }
+  .back a { text-decoration: none; padding: 10px 0; }
+  .back .back__brand { padding: 0; }
   .back a:hover { color: var(--plum); }
   .back__brand { display: flex; align-items: center; }
   .back__brand img { display: block; width: 40px; height: 40px; }

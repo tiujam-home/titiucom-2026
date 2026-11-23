@@ -18,12 +18,12 @@ const links = [
   {
     title: 'Verkostoidu kanssani LinkedInissä.',
     text: 'Lue, mitä entiset työkaverini sanovat yhteistyöstä kanssani, ja verkostoidu samalla.',
-    href: 'https://www.linkedin.com/', // TODO: your LinkedIn profile URL
+    href: 'https://www.linkedin.com/in/titiu/',
     icon: '↗',
     external: true,
   },
   {
-    title: 'Lataa ansioluetteloni.',
+    title: 'Lataa ansio­luetteloni.',
     text: 'Suosin ansioluettelossakin verkon joustavuutta, mutta jos olet PDF-ihmisiä, tämä on varsinainen koukuttava lukuelämys ;)',
     href: '/titiu-rajanto-cv.pdf', // TODO: put the PDF in the public folder
     icon: '↓',
@@ -32,7 +32,7 @@ const links = [
   {
     title: 'Katso omat tee-se-itse-projektini.',
     text: 'Jotain puuseppä-isoisältäni on selvästi tarttunut, sillä olen aina tykännyt näprätä fyysisten asioiden parissa bittien ja pikselien lisäksi. Vasara käteen.',
-    href: '#', // TODO: DIY projects page
+    href: '/tee-se-itse',
     icon: '→',
   },
 ];
@@ -207,5 +207,8 @@ const links = [
     .more { grid-template-columns: 1fr; }
     .more li { border-right: none; border-bottom: var(--line); }
     .more li:last-child { border-bottom: none; }
+  }
+  @media (max-width: 380px) {
+    .about__title { font-size: 11vw; }
   }
 </style>

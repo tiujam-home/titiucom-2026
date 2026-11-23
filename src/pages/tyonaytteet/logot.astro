@@ -1,0 +1,135 @@
+---
+/**
+ * Logot vuosien varrelta. Content from titiu.com/logos.
+ * This slug is excluded from [slug].astro, which renders the other cases.
+ */
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+import Sheet from '../../components/portfolio/Sheet.astro';
+import ContactSheet from '../../components/portfolio/ContactSheet.astro';
+import { cases } from '../../data/cases';
+
+const slug = 'logot';
+const index = cases.findIndex((c) => c.slug === slug);
+const item = cases[index];
+const number = String(index + 1).padStart(2, '0');
+const img = (f: string) => `/img/logot/${f}`;
+
+type Logo = { file: string; alt: string; bg: string; dark?: boolean; size?: 'small' | 'wide' };
+type Panel = { name: string; logos: Logo[]; bgImage?: string };
+
+// One panel per row; a panel with two logos shows them side by side.
+const panels: Panel[] = [
+  { name: 'Jyri Saraste', logos: [{ file: 'logo-saraste-01.svg', alt: 'Jyri Sarasteen logo', bg: '#EEEEEE', size: 'small' }] },
+  {
+    name: 'Jyri Saraste – yksiväriset',
+    logos: [
+      { file: 'logo-saraste-01-black.svg', alt: 'Jyri Sarasteen logo mustana', bg: '#FFFFFF', size: 'small' },
+      { file: 'logo-saraste-01-white.svg', alt: 'Jyri Sarasteen logo valkoisena', bg: '#000000', dark: true, size: 'small' },
+    ],
+  },
+  { name: 'Saalistaja', logos: [{ file: 'saalistaja-logo-white.svg', alt: 'Saalistajan logo valkoisena', bg: '#EA4848', dark: true }] },
+  { name: 'Saalistaja', logos: [{ file: 'saalistaja-logo-black.svg', alt: 'Saalistajan logo mustana', bg: '#FFFFFF' }] },
+  { name: 'Elementtisuunnittelu.fi', logos: [{ file: 'elementtisuunnittelu-fi-logo.svg', alt: 'Elementtisuunnittelun logo', bg: '#EEEEEE', size: 'wide' }] },
+  { name: 'MOOC.fi', logos: [{ file: 'logo-mooc-icon.svg', alt: 'MOOC.fi:n logo, symboli', bg: '#EEEEEE', size: 'small' }] },
+  { name: 'MOOC.fi', logos: [{ file: 'logo-mooc-horizontal.svg', alt: 'MOOC.fi:n logo, vaakaversio', bg: '#FFFFFF', size: 'wide' }] },
+  { name: 'Kehitystö ry', logos: [{ file: 'logo-kehitysto.svg', alt: 'Kehitystö ry:n logo', bg: '#EAF9F9', size: 'small' }] },
+  { name: 'Kehitystö ry', logos: [{ file: 'logo-kehitysto-horizontal.svg', alt: 'Kehitystö ry:n logo, vaakaversio', bg: '#FFFFFF', size: 'wide' }] },
+  { name: 'Hehku', bgImage: 'logo-hehku-bg.webp', logos: [{ file: 'logo-hehku.svg', alt: 'Hehkun logo', bg: 'transparent', size: 'small' }] },
+  { name: 'Apaja', logos: [{ file: 'logo-apaja.svg', alt: 'Apajan logo', bg: '#364E75', dark: true }] },
+  { name: 'Apaja', logos: [{ file: 'logo-apaja-dark.svg', alt: 'Apajan logo tummana', bg: '#EEEEEE' }] },
+  { name: 'Jyri Saraste', logos: [{ file: 'logo-saraste-02.svg', alt: 'Jyri Sarasteen toinen logo', bg: '#FFFFFF', size: 'small' }] },
+];
+---
+
+<PortfolioLayout title={`${item.title} – Titiu Rajanto`} description="Logoja, joita olen suunnitellut vuosien varrella.">
+  <Sheet label="Työnäytteet" bottomLabel={number}>
+    <nav class="back">
+      <a href="/#tyonaytteet">← Takaisin työnäytteisiin</a>
+      <a href="/" class="back__brand" aria-label="Titiu Rajanto – etusivulle"><img src="/img/tiu-logo.svg" alt="Titiu Rajanto" width="40" height="40" /></a>
+    </nav>
+    <header class="intro">
+      <p class="label intro__num">Työnäyte {number}</p>
+      <h1 class="display intro__title">Logoja vuosien<br />varrelta</h1>
+      <div class="intro__lead">
+        {item.intro.map((p) => <p>{p}</p>)}
+      </div>
+      <ul class="tags">{item.tags.map((t) => <li>{t}</li>)}</ul>
+    </header>
+  </Sheet>
+
+  <Sheet label="Logot">
+    {panels.map((panel) => (
+      <div
+        class:list={['panel', { 'panel--pair': panel.logos.length > 1 }]}
+        style={panel.bgImage ? `background-image: url(${img(panel.bgImage)})` : undefined}
+      >
+        {panel.logos.map((logo) => (
+          <figure class:list={['logo', { 'logo--dark': logo.dark }]} style={`background-color: ${logo.bg}`}>
+            <img class:list={['logo__img', logo.size && `logo__img--${logo.size}`]} src={img(logo.file)} alt={logo.alt} loading="lazy" decoding="async" />
+          </figure>
+        ))}
+      </div>
+    ))}
+  </Sheet>
+
+  <ContactSheet />
+</PortfolioLayout>
+
+<style>
+  .back {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px var(--pad);
+    border-bottom: var(--line);
+    font-size: 16px;
+  }
+  .back a { text-decoration: none; padding: 10px 0; }
+  .back .back__brand { padding: 0; }
+  .back a:hover { color: var(--plum); }
+  .back__brand { display: flex; align-items: center; }
+  .back__brand img { display: block; width: 40px; height: 40px; }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 120px var(--pad) 48px;
+  }
+  .intro__num { color: var(--plum); }
+  .intro__title { font-size: clamp(44px, 8vw, 112px); line-height: 0.92; color: var(--orange); }
+  .intro__lead { display: flex; flex-direction: column; gap: 16px; max-width: 760px; font-size: 19px; line-height: 30px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { font-size: 16px; line-height: 1.2; padding: 7px 14px; border: var(--line); border-radius: 999px; }
+
+  .panel {
+    display: grid;
+    border-bottom: var(--line);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  .panel:last-child { border-bottom: none; }
+  .panel--pair { grid-template-columns: 1fr 1fr; }
+
+  .logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 720px;
+    margin: 0;
+    padding: 200px var(--pad);
+  }
+  .panel--pair .logo + .logo { border-left: var(--line); }
+  .logo__img { display: block; width: min(440px, 70%); height: auto; }
+  .logo__img--small { width: min(260px, 50%); }
+  .logo__img--wide { width: min(620px, 80%); }
+  .panel--pair .logo__img--small { width: min(220px, 60%); }
+
+  @media (max-width: 900px) {
+    .intro { padding-top: 56px; }
+    .logo { min-height: 440px; padding: 120px var(--pad); }
+    .panel--pair { grid-template-columns: 1fr; }
+    .panel--pair .logo + .logo { border-left: none; border-top: var(--line); }
+  }
+</style>

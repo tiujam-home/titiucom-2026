@@ -2,8 +2,7 @@
 import Sheet from './Sheet.astro';
 import { recommendations } from '../../data/recommendations';
 
-// TODO: your LinkedIn recommendations URL
-const linkedInUrl = 'https://www.linkedin.com/';
+const linkedInUrl = 'https://www.linkedin.com/in/titiu/details/recommendations/';
 ---
 
 <Sheet label="Suositukset" id="suositukset">
@@ -115,5 +114,8 @@ const linkedInUrl = 'https://www.linkedin.com/';
     .rec__quote { font-size: 16px; line-height: 26px; }
     .rec__person img { width: 56px; height: 56px; }
     .recs__more { font-size: 16px; }
+  }
+  @media (max-width: 380px) {
+    .recs__title { font-size: 11vw; }
   }
 </style>
