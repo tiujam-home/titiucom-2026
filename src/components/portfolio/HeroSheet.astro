@@ -22,7 +22,7 @@ const links = [
   <div class="hero">
     <div class="hero__title">
       <p class="label hero__hello">Hei, olen</p>
-      <h1 class="display hero__name">Titiu<br />Rajanto.</h1>
+      <h1 class="display hero__name"><a href="#tutustutaan">Titiu<br />Rajanto.</a></h1>
     </div>
     <div class="hero__side">
       <p class="label">UI/UX-suunnittelija ja front-end-kehittäjä</p>
@@ -84,6 +84,13 @@ const links = [
     letter-spacing: -0.04em;
     color: var(--orange);
   }
+  .hero__name a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hero__name a:hover,
+  .hero__name a:focus-visible { color: var(--plum); }
   .hero__side {
     width: 400px;
     flex-shrink: 0;
