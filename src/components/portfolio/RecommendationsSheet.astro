@@ -1,0 +1,119 @@
+---
+import Sheet from './Sheet.astro';
+import { recommendations } from '../../data/recommendations';
+
+// TODO: your LinkedIn recommendations URL
+const linkedInUrl = 'https://www.linkedin.com/';
+---
+
+<Sheet label="Suositukset" id="suositukset">
+  <div class="recs__head">
+    <h2 class="display recs__title">Suositukset</h2>
+  </div>
+
+  <ul class="recs">
+    {recommendations.map((r, i) => (
+      <li class:list={['rec', { 'rec--featured': i === 2 }]}>
+        <span class="rec__mark" aria-hidden="true">”</span>
+        <blockquote class="rec__quote">{r.quote}</blockquote>
+        <div class="rec__person">
+          <img src={r.photo} alt={r.name} width="72" height="72" loading="lazy" decoding="async" />
+          <div>
+            <p class="rec__name">{r.name}</p>
+            <p class="rec__role">{r.role}</p>
+            {r.then && <p class="rec__role">{r.then}</p>}
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <a href={linkedInUrl} target="_blank" rel="noopener" class="recs__more">
+    <span>Lue lisää suosituksia LinkedInistä</span>
+    <span class="circle" aria-hidden="true">↗</span>
+  </a>
+</Sheet>
+
+<style>
+  .recs__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 40px var(--pad);
+    border-bottom: var(--line);
+  }
+  .recs__title { font-size: 64px; }
+
+  .recs { display: grid; grid-template-columns: 1fr 1fr; }
+  .rec {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px var(--pad) 32px;
+    border-bottom: var(--line);
+  }
+  .rec:nth-child(odd) { border-right: var(--line); }
+  .rec__mark {
+    font-family: var(--font-display);
+    font-size: 96px;
+    line-height: 0.6;
+    height: 40px;
+    color: var(--orange);
+  }
+  .rec__quote {
+    margin: 0;
+    font-size: 18px;
+    line-height: 29px;
+    max-width: 560px;
+    flex-grow: 1;
+  }
+  .rec__person {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--ink);
+  }
+  .rec__person img {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+  .rec__name { font-weight: 800; }
+  .rec__role { font-size: 16px; line-height: 22px; color: var(--muted); }
+
+  .rec--featured { background: var(--plum); color: var(--paper); }
+  .rec--featured .rec__person { border-top-color: var(--plum-soft); }
+  .rec--featured .rec__role { color: var(--plum-soft); }
+
+  .recs__more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px var(--pad);
+    font-family: var(--font-display);
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .recs__more:hover { color: var(--plum); }
+
+  @media (max-width: 900px) {
+    .recs__head { flex-direction: column; align-items: flex-start; padding: 32px var(--pad); gap: 8px; }
+    .recs__title { font-size: 40px; }
+    .recs { grid-template-columns: 1fr; }
+    .rec:nth-child(odd) { border-right: none; }
+    .rec { padding: 32px var(--pad) 24px; gap: 24px; }
+    .rec__quote { font-size: 16px; line-height: 26px; }
+    .rec__person img { width: 56px; height: 56px; }
+    .recs__more { font-size: 16px; }
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+import Sheet from './Sheet.astro';
+
+const links = [
+  { label: 'Näin työskentelen', href: '#nain-tyoskentelen' },
+  { label: 'Työnäytteet', href: '#tyonaytteet' },
+  { label: 'Tutustutaan', href: '#tutustutaan' },
+  { label: 'Ota yhteyttä', href: '#ota-yhteytta' },
+];
+---
+
+<nav class="tabs" aria-label="Päävalikko" data-scrollspy>
+  <a href="#alkuun" class="tabs__brand" aria-label="Titiu Rajanto – alkuun"><img src="/img/tiu-logo.svg" alt="Titiu Rajanto" width="40" height="40" /></a>
+  <ul>
+    <li><a href="#alkuun" class="is-active" aria-current="location">Alkuun</a></li>
+    {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+  </ul>
+</nav>
+
+<Sheet label="Portfolio" id="alkuun">
+
+  <div class="hero">
+    <div class="hero__title">
+      <p class="label hero__hello">Hei, olen</p>
+      <h1 class="display hero__name">Titiu<br />Rajanto.</h1>
+    </div>
+    <div class="hero__side">
+      <p class="label">UI/UX-suunnittelija ja front-end-kehittäjä</p>
+      <p class="hero__lead">
+        Teen <strong>B2B-verkkopalveluista</strong> helppokäyttöisiä. Suunnittelen hyviksi todetuilla
+        käyttöliittymämalleilla, prototypoin HTML:llä ja CSS:llä ja rakennan nopeammin
+        tekoälyavusteisella kehityksellä.
+      </p>
+      <a href="#tyonaytteet" class="hero__link">Katso työnäytteet ⟶</a>
+    </div>
+  </div>
+</Sheet>
+
+<style>
+  /* Sticky top bar. Sits above the hero sheet, overlapping the page gap
+     (32px) plus 1px so the two borders merge into one line. */
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: -33px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px var(--pad) 16px calc(var(--rail) + var(--pad));
+    background: var(--paper);
+    border: var(--line);
+    font-size: 16px;
+  }
+  .tabs a { text-decoration: none; }
+  .tabs a:hover { color: var(--plum); }
+  .tabs__brand { display: flex; align-items: center; }
+  .tabs__brand img { display: block; width: 40px; height: 40px; }
+  .tabs ul { display: flex; gap: 48px; }
+  .tabs .is-active {
+    font-weight: 700;
+    color: var(--plum);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 160px var(--pad) 48px;
+  }
+  .hero__hello {
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    color: var(--plum);
+    margin-bottom: 8px;
+  }
+  .hero__name {
+    font-size: clamp(56px, 10.5vw, 150px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--orange);
+  }
+  .hero__side {
+    width: 400px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 12px;
+  }
+  .hero__side .label { font-size: 19px; letter-spacing: 0.06em; }
+  .hero__lead { font-size: 19px; line-height: 29px; }
+  .hero__lead strong { font-weight: 800; }
+  .hero__link {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--plum);
+    text-decoration: none;
+  }
+  .hero__link:hover { text-decoration: underline; }
+
+  @media (max-width: 1100px) {
+    .tabs ul { gap: 24px; }
+  }
+  @media (max-width: 1240px) {
+    .hero { flex-direction: column; align-items: flex-start; padding-top: 96px; }
+    .hero__side { width: 100%; max-width: 560px; }
+  }
+  @media (max-width: 900px) {
+    .tabs { flex-direction: column; align-items: flex-start; gap: 12px; padding-left: var(--pad); }
+    .tabs ul {
+      gap: 20px;
+      overflow-x: auto;
+      max-width: 100%;
+      white-space: nowrap;
+      padding-bottom: 2px;
+    }
+    .hero {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 56px var(--pad) 32px;
+      gap: 32px;
+    }
+    .hero__side { width: 100%; }
+  }
+</style>
+
+<script>
+  // Scrollspy: highlight the nav link of the section currently under the
+  // sticky nav (same logic as titiu.com, without jQuery).
+  const nav = document.querySelector<HTMLElement>('[data-scrollspy]');
+  if (nav) {
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('ul a[href^="#"]')];
+    const sections = links
+      .map((a) => document.getElementById(a.hash.slice(1)))
+      .filter((el): el is HTMLElement => el !== null);
+
+    let navHeight = 0;
+    const measure = () => {
+      navHeight = nav.offsetHeight;
+      document.documentElement.style.setProperty('--nav-h', `${navHeight}px`);
+    };
+
+    let currentId = '';
+    const update = () => {
+      // Sections have a 16px scroll-margin, so count them active slightly early
+      const line = navHeight + 24;
+      let id = sections[0]?.id ?? '';
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= line) id = s.id;
+      }
+      // At the very bottom of the page, activate the last link
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5;
+      if (atBottom && sections.length) id = sections[sections.length - 1].id;
+
+      if (id === currentId) return;
+      currentId = id;
+      for (const a of links) {
+        const active = a.hash === `#${id}`;
+        a.classList.toggle('is-active', active);
+        if (active) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      }
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+
+    measure();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      measure();
+      update();
+    });
+  }
+</script>

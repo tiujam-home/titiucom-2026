@@ -1,0 +1,95 @@
+---
+import Sheet from './Sheet.astro';
+
+const items = [
+  {
+    title: 'Käyttöliittymäsuunnittelua',
+    text: 'verkkosivuille ja verkkosovelluksille. Pohjana ovat käyttöliittymämallit ja käyttäjien todellinen, mitattava käyttäytyminen.',
+  },
+  {
+    title: 'Front-end-kehitystä',
+    text: 'hyvin kirjoitetulla HTML- ja CSS-koodilla, joka on siistiä ja uudelleenkäytettävää.',
+  },
+  {
+    title: 'Käyttäjäkokemuksen suunnittelua',
+    text: ', joka perustuu muotoiluajatteluun, empaattiseen kuunteluun ja strategiatyöhön.',
+  },
+  {
+    title: 'Rauhallista ja strategista projektinjohtoa',
+    text: 'kokemuksella useilta toimialoilta sekä työntekijän, esihenkilön että yrittäjän näkökulmasta.',
+  },
+  {
+    title: 'Innokasta uteliaisuutta',
+    text: 'kehittää itseäni työssä, terveydessä ja elämässä ylipäätään.',
+  },
+  {
+    title: 'Tiimipelaajan',
+    text: ', joka arvostaa yhteisöä ja pysyy aurinkoisena loskasäälläkin.',
+  },
+];
+---
+
+<Sheet label="Näin työskentelen" id="nain-tyoskentelen">
+  <div class="services">
+    <div class="services__intro">
+      <h2 class="display services__title">Mitä<br />tuon<br />mukanani</h2>
+      <p class="label services__count">01 / 04</p>
+    </div>
+    <ol class="services__list">
+      {items.map((item, i) => (
+        <li>
+          <span class="services__num">{i + 1}.</span>
+          <p>
+            <strong>{item.title}</strong>{item.text.startsWith(',') ? '' : ' '}{item.text}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Sheet>
+
+<style>
+  .services { display: flex; }
+  .services__intro {
+    width: 440px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px var(--pad);
+    border-right: var(--line);
+  }
+  .services__title { font-size: 52px; }
+  .services__count { font-size: 16px; letter-spacing: 0.18em; }
+  .services__list { flex-grow: 1; }
+  .services__list li {
+    display: flex;
+    gap: 24px;
+    padding: 24px var(--pad);
+    border-bottom: var(--line);
+    line-height: 25px;
+  }
+  .services__list li:last-child { border-bottom: none; }
+  .services__list strong { font-weight: 800; }
+  .services__num {
+    width: 28px;
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--plum);
+  }
+
+  @media (max-width: 900px) {
+    .services { flex-direction: column; }
+    .services__intro {
+      width: auto;
+      border-right: none;
+      border-bottom: var(--line);
+      padding: 32px var(--pad);
+    }
+    .services__title { font-size: 40px; }
+    .services__list li { gap: 12px; padding: 20px var(--pad); }
+    .services__num { width: 20px; }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import Sheet from './Sheet.astro';
+---
+
+<Sheet label="Ota yhteyttä" id="ota-yhteytta">
+  <div class="contact">
+    <h2 class="display contact__title">Ota<br />yhteyttä</h2>
+    <div class="contact__side">
+      <p>
+        Ei tehdä tästä monimutkaisempaa kuin tarvitsee. Jätä vain viesti
+        piiiiiiiiiiiiiiiippauksen jälkeen.
+      </p>
+      <a href="mailto:hello@titiu.com" class="contact__mail">
+        <span>hello@titiu.com</span><span aria-hidden="true">→</span>
+      </a>
+      <div class="contact__meta">
+        <!-- TODO: your LinkedIn profile URL -->
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="label">LinkedIn ↗</a>
+        <span class="muted">Etelä-Suomi, Lohja</span>
+      </div>
+    </div>
+  </div>
+</Sheet>
+
+<style>
+  .contact {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 56px var(--pad) 40px;
+  }
+  .contact__title { font-size: clamp(56px, 8.5vw, 120px); line-height: 0.9; letter-spacing: -0.04em; }
+  .contact__side {
+    width: 400px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    line-height: 25px;
+  }
+  .contact__mail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 24px;
+    background: var(--orange);
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .contact__mail:hover { background: #F08F00; }
+  .contact__meta { display: flex; justify-content: space-between; font-size: 16px; }
+  .contact__meta a { text-decoration: none; letter-spacing: 0.12em; }
+  .contact__meta a:hover { color: var(--plum); }
+
+  @media (max-width: 1240px) {
+    .contact { flex-direction: column; align-items: flex-start; }
+    .contact__side { width: 100%; max-width: 480px; }
+  }
+  @media (max-width: 900px) {
+    .contact { flex-direction: column; align-items: flex-start; padding: 40px var(--pad) 32px; }
+    .contact__side { width: 100%; }
+    .contact__mail { font-size: 18px; }
+  }
+</style>

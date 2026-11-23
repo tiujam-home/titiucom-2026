@@ -1,0 +1,79 @@
+---
+import Sheet from './Sheet.astro';
+import { cases } from '../../data/cases';
+---
+
+<Sheet label="Työnäytteet" id="tyonaytteet">
+  <div class="work__head">
+    <h2 class="display work__title">Työnäytteet</h2>
+    <p class="work__aside">(teot puhuvat puolestaan)</p>
+  </div>
+  <ul class="work__list">
+    {cases.map((c, i) => (
+      <li>
+        <a href={`/tyonaytteet/${c.slug}`} class:list={['case', { 'case--featured': i === 1 }]}>
+          <span class="case__num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="display case__title">{c.title}</span>
+          <span class="case__tags">{c.tags.join(' · ')}</span>
+          <span class:list={['circle', { 'circle--filled': i === 1 }]} aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Sheet>
+
+<style>
+  .work__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 40px var(--pad);
+    border-bottom: var(--line);
+  }
+  .work__title { font-size: 64px; }
+  .work__aside { font-weight: 500; }
+
+  .work__list li { border-bottom: var(--line); }
+  .work__list li:last-child { border-bottom: none; }
+  .case {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 28px var(--pad);
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .case:hover { background: #F7F2F6; }
+  .case__num { width: 28px; flex-shrink: 0; font-size: 16px; font-weight: 700; color: var(--plum); }
+  .case__title { width: 560px; flex-shrink: 0; font-size: 36px; letter-spacing: -0.02em; line-height: 1.1; }
+  .case__tags { flex-grow: 1; font-size: 16px; line-height: 20px; color: var(--muted); }
+
+  .case--featured { background: var(--plum); color: var(--paper); }
+  .case--featured:hover { background: #6E255C; }
+  .case--featured .case__num { color: var(--paper); }
+  .case--featured .case__tags { color: var(--plum-soft); }
+  .case--featured .circle { color: var(--plum); }
+
+  @media (max-width: 1100px) {
+    .case__title { width: 380px; font-size: 28px; }
+  }
+  @media (max-width: 900px) {
+    .work__head { flex-direction: column; align-items: flex-start; padding: 32px var(--pad); gap: 8px; }
+    .work__title { font-size: 40px; }
+    .case {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'num circle'
+        'title title'
+        'tags tags';
+      gap: 12px;
+      padding: 24px var(--pad);
+    }
+    .case__num { grid-area: num; }
+    .case__title { grid-area: title; width: auto; font-size: 26px; }
+    .case__tags { grid-area: tags; }
+    .case .circle { grid-area: circle; width: 44px; height: 44px; }
+  }
+</style>

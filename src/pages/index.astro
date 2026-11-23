@@ -1,20 +1,20 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import WorkSamples from '../components/WorkSamples.astro';
-import Testimonial from '../components/Testimonial.astro';
-import Footer from '../components/Footer.astro';
+import PortfolioLayout from '../layouts/PortfolioLayout.astro';
+import HeroSheet from '../components/portfolio/HeroSheet.astro';
+import ServicesSheet from '../components/portfolio/ServicesSheet.astro';
+import ToolsSheet from '../components/portfolio/ToolsSheet.astro';
+import WorkSheet from '../components/portfolio/WorkSheet.astro';
+import RecommendationsSheet from '../components/portfolio/RecommendationsSheet.astro';
+import AboutSheet from '../components/portfolio/AboutSheet.astro';
+import ContactSheet from '../components/portfolio/ContactSheet.astro';
 ---
 
-<BaseLayout title="Titiu Rajanto – UI/UX-suunnittelija ja front-end-kehittäjä">
-  <Header />
-  <main>
-    <Hero />
-    <Services />
-    <WorkSamples />
-    <Testimonial />
-  </main>
-  <Footer />
-</BaseLayout>
+<PortfolioLayout title="Titiu Rajanto – UI/UX-suunnittelija ja front-end-kehittäjä">
+  <HeroSheet />
+  <ServicesSheet />
+  <ToolsSheet />
+  <WorkSheet />
+  <RecommendationsSheet />
+  <AboutSheet />
+  <ContactSheet />
+</PortfolioLayout>

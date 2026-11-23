@@ -1,0 +1,73 @@
+---
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+import Sheet from '../../components/portfolio/Sheet.astro';
+import ContactSheet from '../../components/portfolio/ContactSheet.astro';
+import { cases } from '../../data/cases';
+
+export function getStaticPaths() {
+  return cases.map((c, i) => ({ params: { slug: c.slug }, props: { item: c, index: i } }));
+}
+
+const { item, index } = Astro.props;
+const number = String(index + 1).padStart(2, '0');
+---
+
+<PortfolioLayout title={`${item.title} – Titiu Rajanto`}>
+  <Sheet label="Työnäytteet" bottomLabel={number}>
+    <nav class="back">
+      <a href="/#tyonaytteet">← Takaisin työnäytteisiin</a>
+      <a href="/" class="back__brand" aria-label="Titiu Rajanto – etusivulle"><img src="/img/tiu-logo.svg" alt="Titiu Rajanto" width="40" height="40" /></a>
+    </nav>
+    <div class="case-hero">
+      <p class="label case-hero__num">Työnäyte {number}</p>
+      <h1 class="display case-hero__title">{item.title}</h1>
+      <p class="case-hero__tags">{item.tags.join(' · ')}</p>
+    </div>
+    <div class="case-body">
+      {item.intro.map((p) => <p>{p}</p>)}
+      {item.note && <p class="case-body__note">{item.note}</p>}
+    </div>
+  </Sheet>
+  <ContactSheet />
+</PortfolioLayout>
+
+<style>
+  .back {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px var(--pad);
+    border-bottom: var(--line);
+    font-size: 16px;
+  }
+  .back a { text-decoration: none; }
+  .back a:hover { color: var(--plum); }
+  .back__brand { display: flex; align-items: center; }
+  .back__brand img { display: block; width: 40px; height: 40px; }
+  .case-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 120px var(--pad) 40px;
+    border-bottom: var(--line);
+  }
+  .case-hero__num { color: var(--plum); }
+  .case-hero__title { font-size: clamp(40px, 7vw, 96px); line-height: 0.95; }
+  .case-hero__tags { font-size: 16px; color: var(--muted); }
+  .case-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 40px var(--pad) 56px;
+    line-height: 27px;
+    font-size: 17px;
+  }
+  .case-body p { max-width: 680px; }
+  .case-body__note {
+    padding: 20px 24px;
+    background: var(--plum);
+    color: var(--paper);
+  }
+  @media (max-width: 900px) {
+    .case-hero { padding-top: 56px; }
+  }
+</style>

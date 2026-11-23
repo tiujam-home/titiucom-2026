@@ -1,0 +1,71 @@
+---
+/**
+ * A framed "sheet" with a vertical label rail on the left.
+ * On small screens the rail turns into a horizontal label bar on top.
+ */
+interface Props {
+  label: string;
+  bottomLabel?: string;
+  id?: string;
+}
+
+const { label, bottomLabel, id } = Astro.props;
+---
+
+<section class="sheet" id={id}>
+  <div class="sheet__rail">
+    <span class="label sheet__label">{label}</span>
+    {bottomLabel && <span class="label sheet__label">{bottomLabel}</span>}
+  </div>
+  <div class="sheet__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .sheet {
+    display: flex;
+    background: var(--paper);
+    border: var(--line);
+    scroll-margin-top: 16px;
+  }
+  .sheet__rail {
+    width: var(--rail);
+    flex-shrink: 0;
+    border-right: var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+  }
+  .sheet__label {
+    /* Vertical text that reads bottom-to-top and always starts at the same
+       distance from the top, whatever its length */
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: var(--plum);
+    white-space: nowrap;
+  }
+  .sheet__body {
+    flex-grow: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 900px) {
+    .sheet { flex-direction: column; }
+    .sheet__rail {
+      width: auto;
+      flex-direction: row;
+      padding: 12px var(--pad);
+      border-right: none;
+      border-bottom: var(--line);
+    }
+    .sheet__label {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+  }
+</style>
