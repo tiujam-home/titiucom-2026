@@ -5,7 +5,11 @@ import ContactSheet from '../../components/portfolio/ContactSheet.astro';
 import { cases } from '../../data/cases';
 
 export function getStaticPaths() {
-  return cases.map((c, i) => ({ params: { slug: c.slug }, props: { item: c, index: i } }));
+  // Cases with their own page file in this folder (e.g. ystavyyden-majatalo.astro)
+  const customPages = ['ystavyyden-majatalo'];
+  return cases
+    .map((c, i) => ({ params: { slug: c.slug }, props: { item: c, index: i } }))
+    .filter((p) => !customPages.includes(p.params.slug));
 }
 
 const { item, index } = Astro.props;

@@ -1,0 +1,971 @@
+---
+/**
+ * Ystävyyden Majatalo case study. Content from titiu.com/ystavyyden-majatalo.
+ * This slug is excluded from [slug].astro, which renders the other cases.
+ */
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+import Sheet from '../../components/portfolio/Sheet.astro';
+import ContactSheet from '../../components/portfolio/ContactSheet.astro';
+import Fancybox from '../../components/portfolio/Fancybox.astro';
+import { cases } from '../../data/cases';
+
+const slug = 'ystavyyden-majatalo';
+const index = cases.findIndex((c) => c.slug === slug);
+const item = cases[index];
+const number = String(index + 1).padStart(2, '0');
+const img = (f: string) => `/img/majatalo/${f}`;
+
+const years = ['2013', '2014', '2015', '2016', '2017', '2018'];
+
+const stakeholders = [
+  'Majatalon omistajat ja henkilökunta',
+  'Majatalossa asuvat asukkaat',
+  'Asunto-osakeyhtiön osakkaat',
+  'Yhdistyksen jäsenet',
+  'Hallitusten jäsenet (yhdistys ja asunto-osakeyhtiö)',
+  'Satunnaisesti poikkeavat B&B-matkailijat',
+  'Tiloja vuokraavat kurssien vetäjät ja tilaisuuksien järjestäjät',
+  'Kursseille ja tilaisuuksiin osallistuvat',
+  'Lyhyen aikaa paikalla käyvät vapaaehtoiset',
+  '”Majatalon ystävät”: tukijat, huonekummit, pitkäaikaiset lahjoittajat ja tukijat sekä asukkaiden ja henkilökunnan ystävät ja perheet',
+  'Ihmiset, jotka eivät olleet koskaan käyneet Majatalossa mutta tilasivat uutiskirjeen ja seurasivat somekanavia (mahdollisia tulevia lahjoittajia, vieraita tai kurssiasiakkaita)',
+  'Sen kylän asukkaat, jossa Majatalo sijaitsi',
+  'Kunnan viranhaltijat ja viranomaiset',
+];
+
+const activities = [
+  'Olla tai tulla työntekijäksi',
+  'Jäädä pitkäksi aikaa, ryhtyä asukkaaksi',
+  'Ostaa asunto-osakeyhtiön osakkeita',
+  'Liittyä yhdistyksen jäseneksi',
+  'Yöpyä B&B:ssä',
+  'Järjestää kurssi tai tilaisuus',
+  'Ilmoittautua kurssille tai osallistua tilaisuuteen',
+  'Osallistua vapaaehtoistyöhön (lähinnä viikonloppuisin ja tapahtumissa)',
+  'Lahjoittaa yhdistykselle',
+  'Ryhtyä yhdistyksen kuukausilahjoittajaksi',
+  'Tukea vierashuoneen remonttia',
+  'Viettää päivä tai pari lomaillen',
+  'Kerätä rohkeutta ihan ensimmäiseen Majatalon vierailuun (se saattoi jännittää)',
+  'Hyödyntää Majatalon keskeistä sijaintia ja tilavia tiloja paikallisten seurojen, harrastusryhmien ja yhteisön kokoontumisiin',
+  'Valvoa paloturvallisuus-, terveydensuojelu-, ympäristö- ja muiden määräysten noudattamista',
+];
+
+const screenshots = [
+  { file: 'inn-web-home.png', label: 'Etusivu' },
+  { file: 'inn-web-news.png', label: 'Uutiset' },
+  { file: 'inn-web-page.png', label: 'Sisältösivu' },
+  { file: 'inn-web-calendar.png', label: 'Kurssikalenteri' },
+  { file: 'inn-web-contact.png', label: 'Yhteystiedot' },
+];
+
+const quotes = [
+  {
+    text: '”Tiu on harvinainen yhdistelmä strategista tekijää ja luovaa visionääriä. Minua kosketti aina se, miten ystävällisesti ja rehellisesti hän kohteli vieraita. Hän kohtasi jokaisen suoraan ja otti aikaa varmistaakseen, että jokainen tunsi olonsa tervetulleeksi ja kotoisaksi. Hänellä on intuitiivinen silmä nähdä, kuka sopisi parhaiten mihinkin vapaaehtoistehtävään. Hän huolehti aina siitä, että nekin, jotka halusivat vain rentoutua ja lomailla, tunsivat olonsa yhtä kotoisaksi kuin asukkaat. On vaikea edes kuvitella, että kukaan olisi lähtenyt Majatalosta pettyneenä hänen huomassaan.”',
+    name: 'Tapio Waismaa',
+    role: 'Kohtaaminen ry:n entinen hallituksen jäsen',
+    photo: '/img/tapio.jpg',
+  },
+  {
+    text: '”Tiulla on ainutlaatuinen kyky luoda järjestystä kaaoksesta. Majatalossa hän näki jotenkin sotkun ja väliaikaisratkaisujen kerrosten läpi todellisen potentiaalin. Ongelmasta riippumatta hän purki sen osiin, kokosi siitä hallittavia paloja ja delegoi työn. Majatalolla ei koskaan ollut ammattimaista työvoimaa, mutta silti Tiun johdolla jokainen pääsi osallistumaan omien kykyjensä mukaan. Lisäksi hän oli aina valmis ojentamaan auttavan käden ja kuuntelemaan ketä tahansa, joka sitä tarvitsi. Oli ilo ja kunnia tehdä töitä hänen rinnallaan. Vuosien aikana näin Majatalon muuttuvan nopeasti uppoavasta jollasta rustiikiksi jokiveneeksi, joka on leveä ja vakaa.”',
+    name: 'Jenny Rajanto',
+    role: 'Majatalon entinen asukas ja työntekijä',
+    photo: '/img/jenny.jpg',
+  },
+  {
+    text: '”Titiussa yhdistyvät harvinaisella tavalla viisaus ja käytännön taidot, ja hän tavoittelee päämääriään sinnikkäästi. Luova ajattelu tulee aina mukaan kuvioihin, kun hän on paikalla, ja silti hänellä on lahja saada ihmiset seuraamaan häntä ja auttamaan tavoitteiden saavuttamisessa. Hänen mukavuusalueensa on työskennellä pienessä, luotettujen ihmisten tiimissä selkeän tavoitteen parissa, mutta tarvittaessa hän kasvaa johtajan rooliin, jota julkisemmat ja hankalammat tilanteet vaativat.”',
+    name: 'Tiina Saukko',
+    role: 'Huonekummi ja mentori',
+    photo: '/img/tiina.jpg',
+  },
+];
+
+// Stats table: [label, values per year 2013–2017 (with change), total change]
+const stats: { label: string; values: string[]; total: string }[] = [
+  { label: 'Yhteydenotot (sähköpostikeskustelut)', values: ['708', '925 (+30 %)', '914 (−1 %)', '1 153 (+26 %)', '1 197 (+4 %)'], total: '+69 %' },
+  { label: 'Kurssit / tapahtumat', values: ['42', '53', '61', '54', '61'], total: '+45 %' },
+  { label: 'Huoneet / vuodepaikat (parisänky = 2 paikkaa)', values: ['20 / 48', '', '', '', '24 / 63'], total: '+20 % / +31 %' },
+  { label: 'Verkkosivuston kävijät', values: ['18 900', '23 500 (+24 %)', '23 800 (+1 %)', '24 500 (+3 %)', '31 800* (+30 %)'], total: '+30 %' },
+  { label: 'Uutiskirjeen tilaajat', values: ['1 375', '1 630 (+18 %)', '1 795 (+10 %)', '1 711 (−5 %)', '1 897 (+11 %)'], total: '+38 %' },
+  { label: 'Facebook-sivun tykkäykset', values: ['1 249', '1 841 (+47 %)', '2 111 (+15 %)', '2 562 (+21 %)', '2 841 (+11 %)'], total: '+127 %' },
+];
+const statNotes = [
+  { year: '2013', notes: ['Viikoittaiset talopalaverit aloitettiin', 'Järjestyssääntöjen 1. versio valmis', 'Uusi kirjanpitojärjestelmä'] },
+  { year: '2014', notes: ['Kaikki verovelat maksettu'] },
+  { year: '2016', notes: ['Kokoustila Sovinto valmis käyttöön'] },
+  { year: '2017', notes: ['*Poikkeuksellisen paljon liikennettä, kun uuden toiminnanjohtajan työpaikkailmoitus julkaistiin. Vuonna 2018 liikenne palasi vuoden 2016 tasolle.'] },
+];
+---
+
+<PortfolioLayout title={`${item.title} – Titiu Rajanto`} description="Ystävyyden Majatalo: palvelumuotoilua, muutosjohtamista ja operatiivista johtamista 2013–2017.">
+  <Fancybox slot="head" />
+
+  <!-- Intro -->
+  <Sheet label="Työnäytteet" bottomLabel={number}>
+    <nav class="back">
+      <a href="/#tyonaytteet">← Takaisin työnäytteisiin</a>
+      <a href="/" class="back__brand" aria-label="Titiu Rajanto – etusivulle"><img src="/img/tiu-logo.svg" alt="Titiu Rajanto" width="40" height="40" /></a>
+    </nav>
+    <header class="intro">
+      <p class="label intro__num">Työnäyte {number}</p>
+      <h1 class="display intro__title">Ystävyyden<br />Majatalo</h1>
+      <div class="intro__lead">
+        <p>
+          Ystävyyden Majatalo (jatkossa Majatalo) oli yksi urani laajimmista ja haastavimmista projekteista.
+          Se alkoi verkkonäkyvyyden uudistuksesta ja laajeni lopulta monivuotiseksi sydämen asiaksi, johon kuului
+          <strong>palvelumuotoilua, muutosjohtamista</strong> ja <strong>operatiivista johtamista</strong>.
+        </p>
+        <p>
+          Voisi sanoa, että projekti oli koko liiketoiminnan remontti. Se ulottui arjen askareista (kuten aamiaisen
+          laittamisesta tai saunan lämmittämisestä vieraille) budjetin tasapainottamiseen, järjestyssääntöjen
+          kirjoittamiseen niin asukkaille kuin vieraille sekä yhteistyöhön kunnan ja viranomaisten kanssa. Puhumattakaan
+          oikeiden vierashuoneiden suunnittelusta ja rakentamisesta. Mutta ei mennä asioiden edelle. Mikä tämä paikka oli ja on?
+        </p>
+      </div>
+      <ul class="tags">{item.tags.map((t) => <li>{t}</li>)}</ul>
+    </header>
+    <div class="facts">
+      <div class="facts__col">
+        <h2 class="label">Aikajana</h2>
+        <p>Verkkosivuston uudistus tehtiin vuonna 2012, ja se kesti noin kolme kuukautta.</p>
+        <p>Laajempi liiketoiminnan uudistus tehtiin vuosina 2013–2017, eli siihen meni vajaat viisi vuotta.</p>
+      </div>
+      <div class="facts__col">
+        <h2 class="label">Rooli</h2>
+        <p>Aloitin sivuston graafisesta suunnittelusta, käyttöliittymäsuunnittelusta ja hakukoneoptimoinnista.</p>
+        <p>
+          Myöhemmin toiminnanjohtajana vastasin kymmenistä osa-alueista, kuten asiakaspalvelusta, tarjousten tekemisestä,
+          tapahtumien koordinoinnista, vapaaehtoisten perehdyttämisestä, remontti- ja kunnossapitotöiden johtamisesta,
+          kirjanpidosta, oppaiden, ohjeiden ja dokumentaation kirjoittamisesta sekä raportoinnista hallitukselle. Lista oli pitkä. :)
+        </p>
+      </div>
+      <div class="facts__col">
+        <h2 class="label">Päähaaste</h2>
+        <p>
+          Miten viestiä organisaation sanomaa, kun organisaatio oli ainutlaatuinen ja epätavallinen konsepti, joka yhdistää
+          liiketoimintaa, yhteiskuntavastuuta, yksityistä tukea ja vapaaehtoistyötä – ja palvelee pitkää listaa sidosryhmiä?
+        </p>
+        <p>Miten koko liiketoimintakonsepti saadaan kestäväksi pitkällä aikavälillä sekä taloudellisesti että käytännössä?</p>
+      </div>
+    </div>
+  </Sheet>
+
+  <!-- Toiminnan esittely -->
+  <Sheet label="Toiminnan esittely">
+    <img class="banner" src={img('the-inn-buildings.jpg')} alt="Päärakennus, pieni talo ja saunarakennus" width="1987" height="747" />
+    <div class="split">
+      <div class="prose">
+        <h2 class="display h2">Toiminnan esittely</h2>
+        <p><strong>Kohtaaminen ry</strong> on pieni, yksityinen ja voittoa tavoittelematon yhdistys, jonka päätavoite on tarjota asuinpaikka sitä tarvitseville.</p>
+        <p>
+          Toimintansa rahoittamiseksi yhdistys tarjoaa B&amp;B-majoitusta ja vuokraa tilojaan juhliin ja tilaisuuksiin. Majatalossa
+          järjestetään myös paljon kursseja, joita vetävät sekä oma henkilökunta että ulkopuoliset ammattilaiset. Toimintaa pyörittävät
+          pääosin majatalossa asuvat asukkaat ja siellä vierailevat vapaaehtoiset, sillä virallista henkilökuntaa on kerrallaan vain 2–3.
+          Yhdistyksellä on myös yksityisiä tukijoita, joiden lahjoitukset muodostavat 15–20 prosenttia liikevaihdosta. Julkista rahoitusta
+          se ei saa. Yhdistys on perustettu vuonna 1988.
+        </p>
+        <p>
+          Yhdistys vuokraa tilansa asunto-osakeyhtiöltä, <strong>Ystävyyden Majatalo Oy:ltä</strong>, joka sijaitsee Salon lähellä,
+          suunnilleen Helsingin ja Turun puolivälissä. <strong>1600 m²:n tilat</strong> koostuvat neljästä rakennuksesta: vuonna 1928
+          rakennetusta päärakennuksesta, joka oli alun perin meijeri, saunarakennuksesta, pienemmästä vuonna 1970 rakennetusta
+          asuinrakennuksesta sekä varastoladosta. Käytännössä yhdistys ylläpitää tiloja, sillä asunto-osakeyhtiöllä ei ole palkattua henkilökuntaa.
+        </p>
+      </div>
+      <aside class="box box--plum">
+        <h3 class="label">Heidän omin sanoin</h3>
+        <p><em>”Täällä Ystävyyden Majatalossa tehtävämme on aina ollut tehdä hyvää. Yli 30 vuoden ajan olemme toimineet voittoa tavoittelemattomana yhdistyksenä ja tarjonneet turvasataman niin henkiseen kuin fyysiseen toipumiseen.</em></p>
+        <p><em>Uskomme, että vaikka joku olisi heikommassa asemassa – konkurssissa, henkisesti lopussa tai uupunut – häneltä ei saa evätä perustarpeita. Majatalo on paikka toipua taloudellisesta tilanteesta riippumatta.”</em></p>
+      </aside>
+    </div>
+  </Sheet>
+
+  <!-- Sidosryhmäanalyysi -->
+  <Sheet label="Sidosryhmäanalyysi">
+    <div class="block prose">
+      <h2 class="display h2">Sidosryhmä&shy;analyysi</h2>
+      <p>
+        Jo varhain kävi selväksi, että yksi Majatalon pyörittämisen suurimmista haasteista oli valtava määrä sidosryhmiä. Niin
+        verkkosivuilla kuin paikan päällä arjessa piti huomioida hyvin erilaisia sidosryhmiä. Verkkosivuston suunnittelu oli kuitenkin
+        helppoa verrattuna fyysisen tilan ja koko palvelun suunnitteluun.
+      </p>
+      <p>
+        Liiketoiminnan ja hyväntekeväisyyden yhdistelmä tarkoitti, että sidosryhmien tarpeet ja intressit olivat joskus ristiriidassa.
+        Miten suunnitella 1600 m²:n alue ihmiselle, joka haluaisi investoida paikkaan, ja samalla optimoida se toiselle, joka tarvitsee
+        sitä kodikseen toipuessaan uupumuksesta?
+      </p>
+    </div>
+    <p class="display centered-title"><span aria-hidden="true">↶</span>Alustavan kartoitukseni jälkeen tunnistin seuraavat<span aria-hidden="true">↷</span></p>
+    <div class="cols2">
+      <div class="col">
+        <h3 class="display h3">Keskeiset sidosryhmät</h3>
+        <ul class="bullets">{stakeholders.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div class="col">
+        <h3 class="display h3">Sidosryhmien keskeiset toiminnot</h3>
+        <ul class="bullets">{activities.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    </div>
+  </Sheet>
+
+  <!-- Verkkonäkyvyys -->
+  <Sheet label="Verkkonäkyvyys">
+    <div class="block">
+      <p class="label kicker">Alku</p>
+      <h2 class="display h2">Verkko&shy;näkyvyys</h2>
+    </div>
+    <div class="split split--top">
+      <div class="prose">
+        <p>
+          Suurin haaste oli luoda selkeä ja johdonmukainen viesti, joka välittäisi perustajan vision ja kaikkien paikan hyväksi työtä
+          tehneiden intohimon. Samalla piti välittää tärkeät käytännön tiedot kursseille tuleville, satunnaisille kävijöille, rahaa
+          lahjoittaville… jaaa kaikille muille sidosryhmille.
+        </p>
+        <p>
+          Heti alussa nousi esiin vielä yksi haaste: omistajat eivät missään nimessä halunneet tehdä <strong>minkäänlaista</strong>
+          markkinointia. Puskaradio oli toiminut heille 20 vuotta, ja siinä haluttiin pysyä. Strategia sopi hyvin organisaation arvoihin,
+          mutta se lisäsi entisestään hyvin suunnitellun verkkosivuston merkitystä. Kun ihmiset etsisivät tietoa paikasta, heidän piti
+          löytää etsimänsä mahdollisimman helposti ja haluta innolla jakaa löytönsä ystävilleen.
+        </p>
+        <h3 class="display h3">Ratkaisut</h3>
+        <p>Koska organisaatio oli voittoa tavoittelematon ja sen budjetti siksi tiukka, valitsin mahdollisimman paljon ilmaisia ja avoimen lähdekoodin tai edullisia ratkaisuja.</p>
+        <p>
+          Uusi sivusto rakennettiin <strong>WordPressillä</strong> teemalla, jonka tein heille räätälöitynä. Kahdeksi suurimmaksi
+          laajennukseksi, uutiskirjeeksi ja kurssikalenteriksi, valitsin lopulta <strong>Tribulant Softwaren
+          <a href="https://tribulant.com/plugins/view/1/wordpress-newsletter-plugin" target="_blank" rel="noopener">Newsletter Pluginin</a></strong>
+          ja <strong>Stephen Harrisin <a href="https://wordpress.org/plugins/event-organiser/" target="_blank" rel="noopener">Event Organiser Pluginin</a></strong>.
+        </p>
+        <p>
+          Varmistin, että koodi läpäisi W3C-validoinnin ja että sisältö oli hakukoneoptimoitu sivu- ja artikkelitageineen ja muine
+          metatietoineen. Välimuistitin myös suurimman osan sisällöstä nopeampien latausaikojen vuoksi.
+        </p>
+        <p>
+          Majatalon väen keskuudessa oli vakiovitsi, että suomalaiset suhtautuvat paikkoihin, joiden nimessä on sana ”ystävyys”, hyvin
+          epäluuloisesti. Jos joku mainostaa ystävällisyyttään, siinä täytyy olla jokin juju, eikö niin? Eikö? Päivitin ilmeen tämä yleisö
+          mielessäni. Hain tasapainoa sen välillä, että ilme on ”tarpeeksi rustiikki pysyäkseen uskollisena Majatalon kodinomaisuudelle” ja
+          ”tarpeeksi moderni hälventääkseen turhaa epäluuloa”. Sivuston responsiivisuus oli erityisen tärkeää, jotta ohi ajavat pariskunnat
+          ja perheet huomaisivat paikan.
+        </p>
+        <figure class="figure figure--plain">
+          <a href={img(screenshots[0].file)} data-fancybox="site-collage" data-caption={screenshots[0].label}>
+            <img src={img('case-majatalo-collaction.png')} alt="Kuvakollaasi Majatalon uudistetusta verkkosivustosta. Avaa kuvat sivustosta." width="1300" height="682" loading="lazy" />
+          </a>
+          {screenshots.slice(1).map((s) => (
+            <a href={img(s.file)} data-fancybox="site-collage" data-caption={s.label} hidden></a>
+          ))}
+          <figcaption>
+            Kuvat sivustosta:
+            {screenshots.map((s, i) => (
+              <>
+                <a href={img(s.file)} data-fancybox="site" data-caption={s.label}>{s.label}</a>{i < screenshots.length - 1 ? ' · ' : ''}
+              </>
+            ))}
+          </figcaption>
+        </figure>
+      </div>
+      <aside class="side">
+        <h3 class="display h3">Vanhan sivuston keskeiset haasteet</h3>
+        <ol class="numbered">
+          <li><strong>Ulkoasu näytti hieman vanhentuneelta</strong>, <a href={img('the-inn-old.jpg')} data-fancybox data-caption="Majatalon vanha verkkosivusto">jopa lapselliselta</a>, eikä sitä ollut suunniteltu tai optimoitu mobiilikäyttöön.</li>
+          <li><strong>Sisällöltä puuttui johdonmukainen viesti, ja sen olisi voinut järjestää paremmin.</strong> Suuri osa sisällöstä oli aatteellista, ja sivustolta tuntui puuttuvan käytännön tietoa mahdollisille kävijöille (siis paikan päälle tuleville, ei vain sivuston kävijöille).</li>
+          <li><strong>Selkeät toimintakehotteet puuttuivat.</strong> Sivuston sisältö piti järjestää niin, että jokainen kävijäprofiili löytäisi tärkeimmän tarvitsemansa tiedon mahdollisimman vähillä klikkauksilla.</li>
+          <li><strong>Uutiskirjeet lähetettiin ja postituslistat kerättiin ja päivitettiin käsin.</strong> Siksi kun kunnolliset uutiskirjetyökalut otettiin käyttöön, lähes puolet postituslistasta jouduttiin poistamaan vanhentuneena. Aikamoinen määrä palautuvia viestejä.</li>
+        </ol>
+        <h3 class="display h3">Mikä toimi jo valmiiksi</h3>
+        <p>Sivuston sisältö oli enimmäkseen hyvin kirjoitettua, ja erinomaista sisältöä oli paljon. Tarvittiin vain sisällön järjestäminen johdonmukaisempaan rakenteeseen ja ehkä pientä kasvojenkohotusta joihinkin sisällön osiin.</p>
+        <p>Kävijöiltä oli myös vuosien varrella kerätty palautetta, josta sai hienoja nostolainauksia.</p>
+      </aside>
+    </div>
+    <div class="block block--line prose prose--wide">
+      <h3 class="display h3">Mitattua menestystä</h3>
+      <p>Pieni piikki vuoden 2012 lopussa on kohta, jossa uusi sivusto julkaistiin. Seuraavina vuosina näkyi selvää kasvua vuodesta toiseen, ja Majatalo sai paljon positiivista palautetta uudesta ilmeestä.</p>
+      <figure class="figure">
+        <img src={img('monthly-users.png')} width="1530" height="259" loading="lazy" alt="Viivakaavio kuukausittaisista yksilöidyistä kävijöistä 2009–2019. Kävijöitä on vuonna 2010 noin 1 000 kuukaudessa ja uudistuksen jälkeen vuosina 2015–2018 noin 2 000–3 000. Helmikuussa 2017 käyrässä on noin 10 000 kävijän piikki." />
+        <figcaption>Kaavio näyttää kuukausittaiset yksilöidyt kävijät vuosilta 2009–2019.</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src={img('page-views.png')} width="1527" height="256" loading="lazy" alt="Viivakaavio kuukausittaisista sivujen katselukerroista 2009–2019. Katselukertoja on koko jakson ajan noin 7 000–14 000 kuukaudessa. Helmikuussa 2017 käyrässä on noin 28 000 katselukerran piikki." />
+        <figcaption>Kuten tämä sivujen katselukertojen kaavio näyttää, uskollisia kävijöitä oli paljon jo ennen sivuston uudistusta. Katselukerrat eivät muuttuneet yhtä rajusti kuin yksilöidyt kävijät, joten uskolliset tukijat ilmeisesti pysyivät uskollisina tukijoina. :)</figcaption>
+      </figure>
+      <p>
+        <strong>Uutiskirjeen tilaajien osalta</strong> palautuvat viestit vähenivät normaalin tilaajapoistuman tasolle, kun listalta
+        siivottiin vanhat osoitteet. Uskolliset tilaajat pysyivät, ja uusia tilaajia alkoi tihkua hiljalleen. Omistajat olivat tyytyväisiä
+        siihen, että tällä kertaa listalla oli vain ihmisiä, jotka todella halusivat kuulla kuulumisia. Tilastojen mukaan peräti 60 %
+        tilaajista avasi viestit sen sijaan, että olisi poistanut ne tai merkinnyt ne roskapostiksi. Nykyään harvinainen luku.
+      </p>
+    </div>
+  </Sheet>
+
+  <!-- Asiakaskokemus -->
+  <Sheet label="Asiakaskokemus">
+    <img class="banner" src={img('the-inn-feeling.jpg')} alt="Tunnelmakuva Majatalosta" width="2284" height="690" loading="lazy" />
+    <div class="block">
+      <p class="label kicker">Varsinainen työ</p>
+      <h2 class="display h2">Asiakaskokemuksen uudelleen&shy;suunnittelu</h2>
+    </div>
+    <div class="split split--top">
+      <div class="prose">
+        <p>Kun osallistuin projektiin enemmän ja opin tuntemaan Majatalon tilanteen paremmin, tunsin kutsumusta tehdä muutakin kuin päivittää verkkosivut. Kävi ilmi, että apua tarvittiin monella eri alueella. Verkkosivusto oli vain jäävuoren huippu.</p>
+        <p>Ensisilmäyksellä Majatalon tilanne saattoi vaikuttaa toivottomalta, ja tietyllä tavalla se todella olikin. Perustajia oli kohdannut henkilökohtainen tragedia, ja viime vuosina asiat olivat yksinkertaisesti alkaneet lipsua. Tiedät kyllä. Entropia. Se iskee lopulta jokaiseen.</p>
+        <p>Ennen kuin lasken eteesi pitkän listan <em>Majatalon haasteita</em>, haluan kertoa, miksi paikan saaminen takaisin jaloilleen tuntui minusta niin tärkeältä. Ympäri maata oli tuhansia ihmisiä, joiden elämää Majatalo oli koskettanut, joissain tapauksissa jopa elämää muuttavalla tavalla. Tieto siitä, että Majatalo jatkaisi olemassaoloaan, oli heille tärkeä lohdun ja turvan lähde. Eräänlainen vakuutus masennusta tai epätoivoa vastaan.</p>
+        <p>Oli liikuttavaa todistaa tätä hyvää voimaa. Aloin itsekin uskoa asiaan, ja yhteisön tarmo ja sitoutuminen inspiroivat minua syvästi.</p>
+        <p>Noh, lukuisten haastattelujen ja viikkojen omien havaintojen jälkeen minulle oli alkanut muodostua kuva Majatalon asiakaskokemuksen keskeisistä haasteista.</p>
+        <p><strong>Kaksi asiaa vaikutti asiakaskokemukseen merkittävästi:</strong> tilat (majoitus, oleskelu, juhlat, kurssit) sekä kohtaamiset Majatalon henkilökunnan ja asukkaiden kanssa. Koska suunniteltavaa ja rakennettavaa asiakastilaa oli paljon, tilojen muuttaminen vaati myös työnjaon muuttamista. Uudelleenjärjestely vaikutti moniin asiakaskohtaamisiin, kuten vastaanottoon, huoneiden siivoukseen, ruoan tarjoiluun ja ylipäätään siihen, että kaikki tärkeä tieto oli niin asukkaiden kuin vieraiden saatavilla.</p>
+      </div>
+      <aside class="box box--plum">
+        <h3 class="label">Lukuisat sidosryhmät ja asiakaskokemuksen suunnittelu</h3>
+        <p>Mitä tahansa ongelmaa ratkaistessa piti aina ottaa askel taaksepäin ja miettiä, miten ratkaisu vaikuttaa kaikkiin eri sidosryhmiin. Yhdelle ryhmälle paras ratkaisu saattoi olla toiselle haitallinen.</p>
+        <p>Kuten olin oppinut verkkosivuprojektin aikana, Majatalon ”käyttäjät” olivat hyvin moninaisia. Siksi oli haastavaa luoda jokaiselle profiilille positiivinen asiakaskokemus vesittämättä ydinkonseptia (jota ilman paikkaa ei voisi olla olemassa) tai tekemättä siitä liian vaikeaa ylläpitää.</p>
+      </aside>
+    </div>
+
+    <p class="display centered-title"><span aria-hidden="true">↶</span>Asiakaskokemuksen keskeiset suunnitteluhaasteet<span aria-hidden="true">↷</span></p>
+    <div class="cols2">
+      <div class="col">
+        <h3 class="display h3">Tilat</h3>
+        <details class="acc"><summary>Tiloja ei ollut jaettu käytännöllisesti ja selkeästi</summary>
+          <p>Yleisiä tiloja, majoitustiloja ja asuintiloja oli vaikea erottaa toisistaan. Siksi kävijöiden ja vapaaehtoisten oli vaikea tietää esimerkiksi, minne he saivat mennä tai mistä tietyt välineet löytyivät.</p>
+          <p>Yleiset tilat olisi pitänyt suunnitella vierailuun ja oleskeluun, ja majoitustilat olisi pitänyt erottaa selkeästi asukkaiden huoneista.</p>
+        </details>
+        <details class="acc"><summary>Rakennuksista puuttuivat selkeät varastotilat… ja tavaraa oli yksinkertaisesti liikaa</summary>
+          <p>Vuosien luottaminen lahjoitettuihin huonekaluihin ja välineisiin oli johtanut tilanteeseen, jossa jokainen huone, käytävä, nurkka ja sopukka oli täynnä tavaraa. Kukaan ei uskaltanut heittää pois vanhoja välineitä, vaikka ne tuskin enää toimivat.</p>
+          <p>Tilojen siivoaminen ja ylläpito oli tarpeettoman vaikeaa, koska vanhoja työkaluja, huonekaluja ja tavaroita oli siellä täällä miten sattui. Kukaan ei ajatellut tiloja käytettävyyden näkökulmasta.</p>
+        </details>
+        <details class="acc"><summary>Tärkeimmät välineet olivat vanhoja, usein keskenään yhteensopimattomia tai vain vaikeasti löydettävissä</summary>
+          <p>Tämä vaikutti myös henkilökunnan ja asukkaiden haluun siivota, korjata ja järjestää asioita. Kun muutin Majataloon, löysin kahdeksan eri merkin pölynimuria, joista jokaiseen sopi eri pölypussi ja joista yksi toimi kunnolla.</p>
+          <p>Tämä johti myös resurssien tuhlaukseen, sillä uusia tavaroita ostettiin vain siksi, ettei kukaan löytänyt aiemmin ostettuja.</p>
+        </details>
+        <details class="acc"><summary>Monissa tiloissa näkyi jo vakavia kulumisen merkkejä</summary>
+          <p>Koska Majatalo oli ollut ensimmäiset 20 toimintavuottaan jatkuvan taloudellisen paineen alla, monet majoitushuoneet olivat kuluneita ja monet huoltotilat huonossa kunnossa.</p>
+          <p>Asiakkailta oli alkanut tulla negatiivista palautetta. Vaikka he rakastivat Majatalon tehtävää ja henkeä, majoitushuoneiden ja oleskelutilojen kunto oli saanut heidät vierailemaan harvemmin.</p>
+        </details>
+      </div>
+      <div class="col">
+        <h3 class="display h3">Työnjako</h3>
+        <details class="acc"><summary>Riittämättömät merkinnät ja työohjeet</summary>
+          <p>Dokumentaatiota ei ollut tarpeeksi, jotta asukkaiden ja vapaaehtoisten suuri vaihtuvuus olisi saatu hallintaan. Monet olemassa olevista ohjeista olivat vanhentuneita, ristiriitaisia tai epäjohdonmukaisia. Ohjeita oli yksinkertaisesti liikaa, mikä aiheutti ”ponnahdusikkunasokeutta”: ihmiset lakkasivat kiinnittämästä huomiota ohjeisiin ja merkintöihin. Vapaaehtoiset piti perehdyttää perustehtäviinkin, jotka hyvin suunniteltu, hyvin sijoitettu ja tarpeeksi lyhyt ohje olisi hoitanut.</p>
+        </details>
+        <details class="acc"><summary>Tärkeitä päätöksiä ja linjauksia ei ollut dokumentoitu riittävästi</summary>
+          <p>Uusilla työntekijöillä tai yhdistyksen jäsenillä ei ollut mitään keinoa ymmärtää, millaisia päätöksiä operatiivinen johto ja hallitus olivat aiemmin tehneet ja miksi. Tämä johti samojen virheiden toistamiseen, usein turhaan, vuosien varrella. ”Hiljainen tieto” oli omistajien ja entisten asukkaiden päissä, eikä missään muualla.</p>
+          <p>Tämä oli johtanut tiedostamattomaan ”selviytymisen” strategiaan ja energiaan ”kukoistamisen” sijaan. Monet ratkaisut olivat lyhytnäköisiä, ja aluksi tuntui mahdottomalta saada ihmiset näkemään valoa tunnelin päässä.</p>
+        </details>
+        <details class="acc"><summary>Heikko taloushallinto vaikeutti talouden seurantaa ja suunnittelua</summary>
+          <p>Kirjanpito tehtiin paperilla, mikä teki kaikenlaisesta vertailevasta analyysistä äärimmäisen vaikeaa. Lisäksi, kuten maaseudulla on tyypillistä, suurin osa kaupasta oli tehty käteisellä ja ilman kuitteja. Tulolähteet olivat siis parhaita arvioita, jotka usein kirjattiin viikon tai kuukauden lopussa. Arvattuihin lukuihin perustuvassa liiketoiminnan analysoinnissa ei ollut paljon järkeä.</p>
+          <p>Saatat ajatella, että näin pienellä organisaatiolla täytyy olla yksinkertainen liiketoimintamalli. Majoituksen, ruoan, vuokrien, kurssimaksujen ja lahjoitusten tulolähteiden lisäksi oli kuitenkin monta asiakasryhmää omine toimintoineen: kursseja, juhlia, vuosittaisia tapahtumia, B&amp;B-majoitusta, asumista ja niin edelleen.</p>
+          <p>Jos halusimme kasvattaa tuloja, meidän piti ymmärtää, mistä raha tällä hetkellä tuli ja millaiseen toimintaan kannatti panostaa.</p>
+          <p>No, onnea onnettomuudessa: aloitusvuoteni toiminnanjohtajana oli ensimmäinen vuosi, jolloin yhdistys joutui perimään ja tilittämään arvonlisäveroa palveluistaan. Yhtäkkiä jokainen maksutapahtuma piti dokumentoida. Ja niin astuivat kuvaan pilvipohjainen kirjanpito ja kunnolliset liiketoiminta-analyysit.</p>
+        </details>
+        <details class="acc"><summary>Työntekijöitä ei ollut tarpeeksi</summary>
+          <p>Majatalossa oli keskimäärin vain kaksi palkattua työntekijää (toiminnanjohtaja ja emäntä/yhteisövastaava), ja suurimman osan arjen askareista, kuten majoituksen, maksujen käsittelyn, pihatöiden ja keittiötöiden, hoitivat vapaaehtoiset. Siksi suurimmasta osasta paikan päällä tehtävästä työstä ei voinut odottaa ammattitaitoa tai ammattimaista asennetta. Tämä puolestaan tarkoitti, että työ piti suunnitella niin, että sen pystyi oppimaan ja tekemään vähemmälläkin osaamisella.</p>
+        </details>
+        <details class="acc"><summary>Järjestyssääntöjä ei ollut kirjattu</summary>
+          <p>Vaikka tietty ”jokainen saa olla oma itsensä aina” -henki oli Majatalon tunnelman kulmakivi, kirjattujen sääntöjen täydellinen puuttuminen aiheutti epämukavuutta, kiusallisuutta ja hämmennystä niin vieraiden kuin asukkaiden keskuudessa.</p>
+          <p>Pahinta oli, että ristiriitojen ratkaiseminen oli vaikeaa, kun mitään kirjattua, yhdessä allekirjoitettua ja hyväksyttyä ei ollut, mihin nojata. Ihmiset olivat aiheellisesti huolissaan siitä, että oikeutta jaettiin perustajien oikkujen mukaan. Tämä vaikutti selvästi työmoraaliin päivittäin.</p>
+        </details>
+        <details class="acc"><summary>Päivittäistä työtä ei ollut järjestetty tehokkaasti</summary>
+          <p>Ilman järjestelmällisyyttä ja läpinäkyvyyttä työkuorma jakautui epätasaisesti, ja yleensä sitä kantoivat kaksi tai kolme tunnollisinta vapaaehtoista. Tämä aiheutti turhaa uupumusta ja heikensi yhtä yhdistyksen perustehtävistä: tarjota kriisissä oleville ihmisille paikka levätä ja toipua.</p>
+        </details>
+        <details class="acc"><summary>Majatalon sisäinen aikataulu ei ollut kenenkään nähtävillä tai jaettuna</summary>
+          <p>Sitä pidettiin paperisessa kalenterissa, joka kulki yhden ihmisen mukana. Talon sisäiselle viestinnälle ja asukkaiden väliselle viestinnälle ei ollut muuta keinoa kuin tavata kasvokkain. Vaikka vapaaehtoiset olisivat halunneet ja pystyneet koordinoimaan työtä keskenään, heillä ei yksinkertaisesti ollut siihen välineitä.</p>
+        </details>
+      </div>
+    </div>
+
+    <p class="display centered-title"><span aria-hidden="true">↶</span>Vahvuudet, joita hyödynnettiin molemmilla osa-alueilla<span aria-hidden="true">↷</span></p>
+    <div class="strengths">
+      <div class="strength">
+        <img src={img('huonetaulu.jpg')} alt="Vastaanoton huonetaulu" width="1000" height="1424" loading="lazy" />
+        <div class="prose">
+          <p><strong>Epätavallinen paikka mahdollistaa epätavalliset (luovat ja edulliset) ratkaisut.</strong> Paikan perustaja ei juuri välittänyt tavanomaisista toimintatavoista. Se antoi minulle tilaisuuden yhdistellä UX-suunnittelu- ja ongelmanratkaisutaitojani epätavallisilla tavoilla. Nautin todella ratkaisujen etsimisestä, ja osa niistä toimisi vain Ystävyyden Majatalossa.</p>
+          <p>Vastaanotossa esimerkiksi teimme majoitushuoneiden pohjapiirroksen, huoneiden nimet ja senhetkisen majoitustilanteen vieraille näkyviksi. Kun vieras alkoi varata huonetta, hän pystyi valitsemaan huoneensa sijainnin, huoneen teeman tai minkä tahansa muun tekijän perusteella. Koska kummihuoneilla oli nimet, huoneet saivat persoonallisuutta. Tämä oli vain yksi Majatalon erikoisuuksista, joita hyödynsimme asiakaskokemuksessa.</p>
+        </div>
+      </div>
+      <div class="strength">
+        <img src={img('piled-wood.jpg')} alt="Pinottuja polttopuita" width="757" height="756" loading="lazy" />
+        <div class="prose">
+          <p><strong>Vahva yhteisöllisyys tarkoitti vankkaa tukea yhteisöltä sekä työn että rahoituksen muodossa.</strong> Pienistä arjen tehtävistä, kuten saunapuiden pilkkomisesta, suurempiin projekteihin, kuten tonnin painoisen betonilohkareen siirtämiseen, apua sai aina asukkailta tai laajemmalta yhteisöltä. Naapurit toivat traktoreitaan, kaivinkoneitaan ja kuorma-autojaan avuksi rakentamiseen ja pihatöihin. Joka vuosi eräs lahjoitti metsästään polttopuut talven yli, ja toinen auras pihatien lumimyräkän jälkeen. Oli tärkeää antaa takaisin yhteisölle ja pitää huolta näistä suhteista.</p>
+        </div>
+      </div>
+      <div class="strength">
+        <img src={img('founder.jpg')} alt="Majatalon perustaja" width="1000" height="842" loading="lazy" />
+        <div class="prose">
+          <p><strong>Paikan aate ja visio olivat vahvoja perustajan ja kaikkien Majatalossa ja sen hyväksi työskennelleiden mielissä.</strong> Se teki kaikista sitkeämpiä vastoinkäymisissä ja kantoi yhdistyksen niiden aikojen yli, jolloin käytännön järjestelyt oli pahasti laiminlyöty. Tämä aatteeseen perustuva yrittäjähenki tarttui satunnaisiinkin kävijöihin. Juuri tämä henki sai ihmiset lahjoittamaan aikaansa ja rahaansa paikan pitämiseksi pystyssä jopa 1990-luvun laman yli.</p>
+        </div>
+      </div>
+    </div>
+  </Sheet>
+
+  <!-- Ratkaisut: tilat -->
+  <Sheet label="Ratkaisut: tilat">
+    <div class="block">
+      <p class="label kicker">Ratkaisut</p>
+      <h2 class="display h2">Tilat</h2>
+    </div>
+    <div class="split split--top split--plan">
+      <div class="plan" data-swap-group>
+        <div class="toggle" role="group" aria-label="Valitse vuosi">
+          {years.map((y, i) => (
+            <button type="button" data-swap-target="plan-image" data-src={img(`layout-inn-${y}.png`)} data-alt={`Majatalon tilajako vuonna ${y}`} aria-pressed={i === 0 ? 'true' : 'false'}>{y}</button>
+          ))}
+        </div>
+        <img id="plan-image" src={img('layout-inn-2013.png')} alt="Majatalon tilajako vuonna 2013" width="1555" height="2437" loading="lazy" />
+      </div>
+      <div class="prose">
+        <h3 class="display h3">Tilajako vuosien varrella</h3>
+        <ul class="legend">
+          <li><img src={img('star.svg')} alt="" width="16" height="16" />Asukkaan huone</li>
+          <li><img src={img('heart.svg')} alt="" width="16" height="16" />Kummihuone</li>
+          <li><img src={img('renovated.svg')} alt="" width="16" height="16" />Remontoitu</li>
+          <li><img src={img('organized.svg')} alt="" width="16" height="16" />Kunnostettu <span class="muted">(enemmän kuin järjestetty)</span></li>
+        </ul>
+        <p>Tässä näet Majatalon tilajaon: 1600 m² jaettuna kolmeen rakennukseen vuosina 2013–2018. Voit liikkua ajassa eteen- ja taaksepäin napauttamalla tai klikkaamalla vuosilukuja ja nähdä, miten tilajako on muuttunut ja mitkä huoneet on remontoitu.</p>
+        <p>Suurimmat muutokset tapahtuivat vuodesta 2013 vuoteen 2014. Huoneet numeroitiin uudelleen, jotta oli helpompi viestiä selkeästi, mistä huoneesta oli kyse. Näet myös, miten asukkaat siirrettiin lähemmäs toisiaan, jotta alueet voitiin jakaa selkeämmin ja kalustaa ja sisustaa asukkaille, vieraille tai yleisiksi tiloiksi.</p>
+        <p>Huonekummiprojekti alkoi yhdellä huoneella vuonna 2013 ja laajeni nopeasti moniin muihin huoneisiin vuosina 2014 ja 2015. Uusi ryhmätila Sovinto avattiin vihdoin yleisölle vuonna 2017.</p>
+      </div>
+    </div>
+
+    <div class="split split--top block--line">
+      <div class="prose">
+        <h3 class="display h3">Kaikki alkaa vastaanotosta</h3>
+        <p>Asiakaskokemuksen parantaminen alkoi ilmeisimmästä paikasta, josta lähes jokainen kävijä sidosryhmästä riippumatta tulee sisään: vastaanotosta.</p>
+        <p>Kartoitimme päätehtävät, jotka muodostaisivat rungon palvelupolulle, jota halusin vastaanoton tukevan.</p>
+        <ul class="bullets bullets--box">
+          <li>Majoitusprosessi
+            <ul>
+              <li>Henkilötietojen kirjaaminen</li>
+              <li>Liinavaatteiden jakaminen (vieraat pedasivat sänkynsä itse)</li>
+              <li>Vieraan perehdyttäminen paikkaan</li>
+            </ul>
+          </li>
+          <li>Maksujen käsittely
+            <ul><li>Kortti, käteinen, kuitit ja laskut</li></ul>
+          </li>
+          <li>Varausten tekeminen</li>
+          <li>Muut toimistotyöt</li>
+          <li>Asukkaiden omat postilokerot</li>
+          <li>Lautapelien säilytys</li>
+          <li>Pöytäliinojen sekä juhla- ja tapahtumakoristeiden säilytys</li>
+        </ul>
+        <p>Tilaan suunnittelemani avoin huonekartta toimi täydellisesti. Aidossa Majatalon hengessä saapuvat vieraat pääsivät osallistumaan siihen, missä huoneessa he yöpyisivät, ja hahmottamaan samalla tilojen koon ja suunnat. Kartta tuntui aina herättävän keskustelua majoittajan ja ensimmäistä kertaa Majataloon saapuvan vieraan välillä. Vieraat huomasivat huonekummien huoneille antamat erikoiset nimet ja kyselivät niistä sen lisäksi, että kysyivät, mistä aamiainen löytyy tai missä sauna on.</p>
+        <p>Vastaanottovirkailijoille (vuorotteleva rooli) dokumentoin vastaanottotyön eri osat ja listasin, mitä pitää ottaa huomioon, kun asiakkaalle annetaan huone ja käsitellään rahaa. Käytin samaa materiaalia, kun perehdytin uusia asukkaita tehtävään.</p>
+        <p class="photo-links">
+          Lisää kuvia vastaanotosta:
+          {['reception-01.jpg', 'reception-02.jpg', 'reception-03.jpg', 'reception-04.jpg'].map((f, i) => (
+            <>
+              <a href={img(f)} data-fancybox="reception">{`Kuva ${i + 1}`}</a>{i < 3 ? ' · ' : ''}
+            </>
+          ))}
+        </p>
+      </div>
+      <figure class="ba ba--tall" data-swap-group>
+        <a href={img('reception.jpg')} data-fancybox="reception" class="zoom"><img id="reception-image" src={img('reception.jpg')} alt="Vastaanotto muutoksen jälkeen" width="800" height="3000" loading="lazy" /></a>
+        <div class="toggle toggle--overlay" role="group" aria-label="Näytä kuva">
+          <button type="button" data-swap-target="reception-image" data-src={img('reception-before.jpg')} data-alt="Vastaanotto ennen muutosta" aria-pressed="false">Ennen</button>
+          <button type="button" data-swap-target="reception-image" data-src={img('reception.jpg')} data-alt="Vastaanotto muutoksen jälkeen" aria-pressed="true">Jälkeen</button>
+        </div>
+      </figure>
+    </div>
+
+    <div class="block block--line prose prose--wide">
+      <h3 class="display h3">Muita merkittäviä muutoksia tiloihin</h3>
+      <p>Vuosien varrella teimme kymmeniä toimia parantaaksemme Majatalon palvelupolkua ja kokemusta kaikille sidosryhmille. Tässä ovat merkittävimmät muutokset:</p>
+      <details class="acc"><summary>Tilojen jakaminen</summary>
+        <div class="acc__media">
+          <a href={img('sectioning.jpg')} data-fancybox="changes" class="zoom"><img src={img('sectioning.jpg')} alt="Asukkaiden tiloja erotettuna yleisistä tiloista" width="968" height="677" loading="lazy" /></a>
+          <p>Jaoin osan tiloista uudelleen pelkästään asukkaiden käyttöön lisätäkseni kodinomaisuutta ja turvallisuuden tunnetta, jonka halusimme jokaisen asukkaan kokevan Majatalossa asuessaan. Oli tiloja, joihin vain he saivat mennä, ja se auttoi heitä vetäytymään kunnolla omaan rauhaan, kun yleisten tilojen hälinä alkoi tuntua liialta. Samalla numeroin kaikki huoneet uudelleen, jotta huoneremonttien dokumentointi (ja kaikki huoneisiin liittyvä viestintä) olisi selkeämpää.</p>
+        </div>
+      </details>
+      <details class="acc"><summary>Varastotilojen tyhjentäminen ja järjestäminen</summary>
+        <div class="acc__media">
+          <a href={img('storage-spaces.jpg')} data-fancybox="changes" class="zoom"><img src={img('storage-spaces.jpg')} alt="Järjestetty varastotila" width="1000" height="665" loading="lazy" /></a>
+          <p>Lahjoitettujen huonekalujen, kodinkoneiden, työkalujen ja muun tavaran tulo ja meno oli olennainen osa Majatalon elämää. Tavaraa virtasi jatkuvasti, ja sitä piti hallita, jottei jokainen vapaa nurkka täyttyisi vanhoilla ja käyttämättömillä välineillä. Suunnittelin Majataloon erilaisia varastotiloja ja varmistin, että asukkaat tunsivat tavaran säännöllisen kierron ja tiesivät, mistä erilaiset tavarat löytyvät. Varastotilojen suunnittelu ja hallinta oli yllättävän suuri osa työtäni Majatalossa.</p>
+        </div>
+      </details>
+      <details class="acc"><summary>Huonekummiprojekti</summary>
+        <figure class="ba" data-swap-group>
+          <a href={img('vesihiisi.jpg')} data-fancybox="changes" class="zoom"><img id="vesihiisi-image" src={img('vesihiisi.jpg')} alt="Vesihiisi-huone muutoksen jälkeen" width="1000" height="518" loading="lazy" /></a>
+          <div class="toggle toggle--overlay" role="group" aria-label="Näytä kuva">
+            <button type="button" data-swap-target="vesihiisi-image" data-src={img('vesihiisi-before.jpg')} data-alt="Vesihiisi-huone ennen muutosta" aria-pressed="false">Ennen</button>
+            <button type="button" data-swap-target="vesihiisi-image" data-src={img('vesihiisi.jpg')} data-alt="Vesihiisi-huone muutoksen jälkeen" aria-pressed="true">Jälkeen</button>
+          </div>
+        </figure>
+        <p>Kesäisin kysyntää oli paljon, ja useampi huone tai vuodepaikka tarkoitti silloin enemmän tuloja. Eräänä juhannuksena keskustelu ystävän kanssa synnytti idean: mitä jos kutsuisimme Majatalon tuhannet ystävät ja fanit mukaan remontoimaan vierashuoneita? Sanat muuttuivat pian teoiksi, ja muutaman vuoden yhteisellä ponnistuksella kunnostimme suurimman osan majoitushuoneista ja lisäsimme huoneiden määrää 20:stä 24:ään. Vuodepaikkojen määrä kasvoi lähes kolmanneksella.</p>
+      </details>
+      <details class="acc"><summary>Uusi ryhmätila Sovinto</summary>
+        <figure class="ba" data-swap-group>
+          <a href={img('sovinto.jpg')} data-fancybox="changes" class="zoom"><img id="sovinto-image" src={img('sovinto.jpg')} alt="Ryhmätila Sovinto muutoksen jälkeen" width="1170" height="437" loading="lazy" /></a>
+          <div class="toggle toggle--overlay" role="group" aria-label="Näytä kuva">
+            <button type="button" data-swap-target="sovinto-image" data-src={img('sovinto-before.jpg')} data-alt="Ryhmätila Sovinto ennen muutosta" aria-pressed="false">Ennen</button>
+            <button type="button" data-swap-target="sovinto-image" data-src={img('sovinto.jpg')} data-alt="Ryhmätila Sovinto muutoksen jälkeen" aria-pressed="true">Jälkeen</button>
+          </div>
+        </figure>
+        <p>Kesän sesonkia lukuun ottamatta talo oli aivan liian usein tyhjä tai puolityhjä. Kesän ulkopuolisten arkipäivien kysynnälle emme voineet paljon, mutta viikonloppuisin kysyntää oli melko paljon ympäri vuoden. Ryhmät olivat niin pieniä, että huoneita riitti yleensä kahdelle ryhmälle, mutta rajoittavana tekijänä oli ainoa ryhmätila.</p>
+        <p>Suunnittelin ja rakensin Majatalon asukkaiden ja vapaaehtoisten avulla uuden kurssi- ja kokoushuoneen. Uusi tila yhdessä huonekummiprojektin kanssa mahdollisti kahden kurssin (ja jopa kaksinkertaisen määrän kurssilaisia) majoittamisen samanaikaisesti, mikä kasvatti vuotuista tulopotentiaalia merkittävästi.</p>
+      </details>
+      <details class="acc"><summary>Uudet opasteet</summary>
+        <div class="acc__media">
+          <a href={img('signage.jpg')} data-fancybox="changes" class="zoom"><img src={img('signage.jpg')} alt="Majatalon uusia opasteita" width="1000" height="1334" loading="lazy" /></a>
+          <p>Suunnittelin uudet merkinnät ja opasteet Majatalon työtiloihin, vierashuoneisiin ja yleisiin tiloihin. Kunnolliset opasteet auttoivat vieraita suunnistamaan laajalla tontilla ja Majatalon välillä labyrinttimaisilla käytävillä. Kunnolliset merkinnät auttoivat henkilökuntaa löytämään etsimänsä, mikä teki työstä nopeampaa ja mukavampaa.</p>
+        </div>
+      </details>
+    </div>
+  </Sheet>
+
+  <!-- Ratkaisut: työnjako -->
+  <Sheet label="Ratkaisut: työnjako">
+    <img class="banner" src={img('volunteering.jpg')} alt="Vapaaehtoisia töissä Majatalossa" width="2500" height="627" loading="lazy" />
+    <div class="block">
+      <p class="label kicker">Ratkaisut</p>
+      <h2 class="display h2">Työnjako</h2>
+    </div>
+    <div class="block prose prose--wide block--flush">
+      <details class="acc"><summary>Teimme suuria muutoksia sisäiseen viestintään</summary>
+        <div class="acc__media">
+          <a href={img('keittion-padi.jpg')} data-fancybox="worksplit" class="zoom"><img src={img('keittion-padi.jpg')} alt="Keittiön yhteinen tabletti" width="500" height="774" loading="lazy" /></a>
+          <p>Otimme käyttöön talon aikataulun ja tilavarauskalenterin (Google Kalenteri), tehtävälistat (taulukot), ostoslistat (Wunderlist), kymmeniä ohjeita (Google Docs ja paperilla), WhatsApp-ryhmät (tiedotus kaikille kävijöille, asukkaille, kunnossapidolle ja johdolle) sekä viikkopalaverien asialistat, jotka olivat kaikkien tietokoneen tai älypuhelimen omistavien saatavilla. Hankimme myös yhteisen tabletin ja asensimme sen keittiöön, jossa asukkaat kävivät päivän mittaan useimmin. Näin tieto siitä, mitä milloinkin tapahtui, oli aina käden ulottuvilla.</p>
+        </div>
+      </details>
+      <details class="acc"><summary>Järjestyssäännöt kirjattiin ensimmäistä kertaa – tietysti yhdessä</summary>
+        <p>Yksi suurimmista ponnistuksistamme oli <a href="https://docs.google.com/document/d/1u5rbNq4HkRg9z6EGcDd-wm2KWVHh_jK2PWbqCuyurxI/edit" target="_blank" rel="noopener">yhteisön sääntöjen ja arvojen (lyhyemmin järjestyssääntöjen)</a> kirjoittaminen. Ne annettiin jokaiselle Majataloon saapuvalle uudelle asukkaalle. Asiakirja auttoi hallitsemaan odotuksia jo pakollisen kahden viikon koeajan aikana, ja jos ihminen päätti jäädä Majataloon (ja henkilökunta ja muut asukkaat hyväksyivät sen), se toimi myös viitekohtana aina, kun joku koki tulleensa kohdelluksi epäreilusti.</p>
+        <p>Ensimmäisen luonnoksen kirjoitti yhdessä viisi asukasta, ja se esiteltiin kaikkien asukkaiden viikkopalaverissa. Sääntöihin tehtiin muutoksia aina, kun yhteisö koki niiden olevan epäreiluja tai epäselviä. Noin 1000 sanan ensimmäinen luonnos kasvoi vuosien mittaan 4000 sanan käsikirjaksi, joka antoi monivivahteisen kuvan elämästä Ystävyyden Majatalossa. Koimme, että asiakirja auttoi kaikkia uusia yhteisön jäseniä kotiutumaan ja samalla ymmärtämään Majatalon tarkoituksen ja sitoutumaan siihen.</p>
+      </details>
+      <details class="acc"><summary>Menot laitettiin suurennuslasin alle ja tehtiin strategisia investointeja</summary>
+        <p>Monia turhia kuluja karsittiin, kuten vanhoja lankapuhelinliittymiä ja eri B&amp;B-markkinointisivustojen listausmaksuja. Aloimme ostaa mahdollisimman paljon tavaraa isoissa erissä ja vähensimme kauppareissuja. (Kävi ilmi, että 20 kilometriä suuntaansa viisi kertaa viikossa tekee yhteensä paljon rahaa.) Pidimme tarpeellisena investoida kunnolla tärkeimpiin hankintoihin, koska heikkolaatuisten välineiden ostaminen tai pelkkien lahjoitustavaroiden hyväksyminen saattoi tulla pitkällä aikavälillä kalliimmaksi. Uusi kirjanpitojärjestelmä auttoi paljon kulujen seurannassa ja talouden suunnittelussa. Näiden muutosten ansiosta pystyimme maksamaan pois 20 000 euron verovelan kahden ensimmäisen toiminnanjohtajavuoteni aikana.</p>
+      </details>
+      <details class="acc"><summary>Majatalon eri käyttäjäprofiileille kirjoitettiin sivukaupalla dokumentaatiota</summary>
+        <p>Säilytimme dokumentit Google Docsissa ja jaoimme ne asukkaiden, vapaaehtoisten, hallituksen jäsenten sekä Majatalon läheisten ystävien ja neuvonantajien kanssa. Kaikki saivat osallistua. Tavoitteena oli kerätä kokeneimpien asukkaiden ja ”alumnien” kartuttama hiljainen tieto ja tuoda se kaikkien saataville. Olisihan kaksinkertainen tragedia menettää äkillisen auto-onnettomuuden tai sydänkohtauksen takia rakkaan ystävän lisäksi kokonainen tietoaarre. Asioiden kirjaaminen oli myös tapa vakiinnuttaa Majatalon visiot, suunnitelmat, säännöt sekä yleinen tarkoitus ja viesti kaikille, myös meille itsellemme.</p>
+      </details>
+      <details class="acc"><summary>Hallituksen kokoukset dokumentoitiin tarkemmin</summary>
+        <p>Kirjasimme hallituksen kokousten pöytäkirjat yksityiskohtaisemmin. Liitimme mukaan tilastoja, jotka antoivat tehdyille päätöksille taustaa, ja tarvittaessa liitteitä. Asialistat kirjoitettiin nyt oikeasti etukäteen ja jaettiin hallituksen jäsenille ennen kokousta, jotta he pystyivät valmistautumaan. Tavoitteenamme oli läpinäkyvämpi ja informatiivisempi päätöksenteon historia tuleville hallituksen jäsenille ja työntekijöille.</p>
+      </details>
+    </div>
+  </Sheet>
+
+  <!-- Tulokset -->
+  <Sheet label="Tulokset">
+    <img class="banner" src={img('winter.jpg')} alt="Majatalo talvella" width="2500" height="618" loading="lazy" />
+    <div class="block">
+      <p class="label kicker">Yhteenveto</p>
+      <h2 class="display h2">Tulokset</h2>
+    </div>
+    <p class="display centered-title"><span aria-hidden="true">↶</span>Pohdintaa vuosien työn tuloksista<span aria-hidden="true">↷</span></p>
+    <div class="cols2">
+      <div class="col prose">
+        <h3 class="display h3">Tilat</h3>
+        <p>Vuosien aikana saimme paljon asiakaspalautetta tehdyistä parannuksista. Palaute oli valtaosin positiivista ja innostunutta.</p>
+        <p>UI-suunnittelijana olen tottunut arvioimaan onnistumistani yleisön hiljaisuudella. Käyttäjät ovat hiljaa, kun he ovat tyytyväisiä, ja ääntä kuuluu vasta, kun jokin on vialla. En siksi odottanut saavani palautetta pienimmistäkin parannuksista. Jopa pienet suuntaopasteet ja lyhyet ohjeet, joita tein ympäri taloa, keräsivät kiitosta. Ihmiset arvostivat mikrotekstien positiivista asennetta ja huomasivat, että ohjeita oli juuri sopivasti: ei niin paljon, että ne olisivat uuvuttaneet, mutta tarpeeksi vastaamaan useimpiin kysymyksiin nopeasti.</p>
+        <p>Parannukset näkyivät selvimmin näissä asioissa:</p>
+        <ul class="bullets">
+          <li>Vastaanottoprosessi oli tehokkaampi ja mukavampi niin henkilökunnalle kuin asiakkaille.</li>
+          <li>Asiakkaat olivat rennompia ja sanoivat usein nukkuneensa parhaat yöunensa kuukausiin.</li>
+          <li>Asukkaat ja vapaaehtoiset olivat rennompia ja itsenäisempiä päätöksenteossa. Uusien jäsenten oli helpompi päästä kiinni Majatalon arkeen, koska dokumentaatiota oli runsaasti ja se oli perusteellista.</li>
+          <li>Palaavat kävijät yleistyivät. Useimmat kurssien ja tapahtumien järjestäjät palasivat Majataloon vuodesta toiseen, koska he kokivat paikan omakseen ja luottivat siihen.</li>
+        </ul>
+      </div>
+      <div class="col prose">
+        <h3 class="display h3">Työnjako</h3>
+        <p>Majatalon väki – niin asukkaat kuin vapaaehtoiset – pystyi tekemään työnsä tehokkaammin. Tilojen jakaminen, työtilojen siivoaminen ja uudelleenjärjestely sekä välineiden parantaminen ympäri taloa tekivät työstä helpompaa ja mukavampaa.</p>
+        <p>Selvästi näki, että järjestyssäännöt olivat tehneet ihmisistä rennompia, varmempia ja itsenäisempiä työskentelemään talon askareissa. Yleensä väärinymmärryksistä syntyneitä ristiriitatilanteita oli helpompi ratkaista, kun kaikki tiesivät paremmin, mitä odottaa ja mitä ei.</p>
+        <p>Viikkopalaverit tuntuivat parantavan kaikkien Majatalossa asuvien (myös minun) vuorovaikutustaitoja, ja niillä oli tärkeä rooli siinä, että heikon itsetunnon tai heikkojen sosiaalisten taitojen asukkaat pystyivät (taas) olemaan tuottavia yhteiskunnan jäseniä.</p>
+      </div>
+    </div>
+
+    <ul class="quotes" aria-label="Suosituksia">
+      {quotes.map((q, i) => (
+        <li class:list={['quote', { 'quote--plum': i === 1 }]}>
+          <span class="quote__mark" aria-hidden="true">”</span>
+          <blockquote>{q.text}</blockquote>
+          <div class="quote__person">
+            <img src={q.photo} alt="" width="56" height="56" loading="lazy" />
+            <p><strong>{q.name}</strong><br /><span class="quote__role">{q.role}</span></p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="block prose prose--wide">
+      <h3 class="display h3">Taloudelliset tulokset</h3>
+      <p>Puhutaan rahasta. Paikan talouden todellisia muutoksia on vaikea näyttää, koska se koostuu kahdesta organisaatiosta (yhdistyksestä ja asunto-osakeyhtiöstä), jotka kietoutuvat tiiviisti toisiinsa. Liiketoiminnan kasvattaminen olisi suhteellisen suoraviivaista, mutta vapaaehtoistyöhön ja lahjoituksiin perustuva voittoa tavoittelematon yhdistys asettaa kasvustrategioille rajoja.</p>
+      <p>Olen silti ylpeä siitä, että saavutimme todellisia tuloksia. Katsotaan lähtötilannetta: vuonna 2011 molemmat organisaatiot olivat konkurssin partaalla. Sanoa, että kirjanpito oli hoidettu huonosti, olisi rankkaa vähättelyä. Jopa erittäin taitavan ystävän avun jälkeen verovelkaa oli 20 000 euroa, mikä oli tuolloin 25 % vuotuisesta liikevaihdosta. Asunto-osakeyhtiön vuokria oli maksamatta noin 15 000 euron edestä. Palkat olivat myöhässä, ja velkaa oli kertynyt muutama tuhat euroa.</p>
+      <p>Käytännössä yhdistyksen toimintaa oli pidetty pystyssä myymällä joka vuosi sen omistamia asunto-osakeyhtiön osakkeita. Yhdistys ei ollut koskaan ollut kannattava, eikä se ollut lähelläkään nollatulosta lähiaikoina. Oli vain ajan kysymys, milloin rahat loppuisivat kokonaan.</p>
+      <p>Tilanne vaikutti siis, öh, hieman toivottomalta. Ja silti pystyimme kasvattamaan tuloja noin 5 % vuodessa, maksamaan vuokrat (velkoineen) asunto-osakeyhtiölle, saamaan palkat ajan tasalle ja maksamaan verovelan pois kahden ensimmäisen vuoden aikana. Tämä onnistui paitsi tuloja kasvattamalla myös <em>karsimalla turhia kuluja rajusti</em>. Vuoteen 2017 mennessä vuositulot olivat kasvaneet 20 000 eurolla 120 000 euroon ja kattoivat kaikki kulut. Pääsimme vihdoin nollatulokseen ja maksoimme samalla velkoja pois.</p>
+      <p>Ja asunto-osakeyhtiöllä oli vihdoin rahaa tehdä kauan kaivattuja remontteja tiloissa. (Arvioin tosin, että seuraavan kymmenen vuoden aikana tarvitaan vielä 150 000–200 000 euron investoinnit perustuksiin, putkiin, suihkuihin ja yleisiin wc-tiloihin, viemäröintiin, kattoon, ikkunoihin, keittiöremonttiin ja muihin kohteisiin.)</p>
+    </div>
+
+    <div class="block block--line">
+      <h3 class="display h3">Muita tilastoja</h3>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Tilastot 2013–2017">
+        <table class="stats">
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden">Mittari</span></th>
+              {['2013', '2014', '2015', '2016', '2017'].map((y) => <th scope="col">{y}</th>)}
+              <th scope="col">Kokonais&shy;muutos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {stats.map((s) => (
+              <tr>
+                <th scope="row">{s.label}</th>
+                {s.values.map((v) => <td>{v}</td>)}
+                <td class="stats__total">{s.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <dl class="stat-notes">
+        {statNotes.map((n) => (
+          <div>
+            <dt class="label">{n.year}</dt>
+            {n.notes.map((t) => <dd>{t}</dd>)}
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="block block--line">
+      <h3 class="display h3">Itsereflektio ja opit</h3>
+      <ul class="learned">
+        <li>
+          <img src={img('survey.svg')} alt="" width="64" height="64" loading="lazy" />
+          <p>Luotin enimmäkseen omiin havaintoihini ja intuitiooni asiakkaiden käyttäytymisestä. Olisin voinut tehdä <strong>järjestelmällisempiä asiakaskyselyjä</strong> joko verkkolomakkeilla tai paperisilla palautelomakkeilla tietyissä Majatalon tiloissa.</p>
+        </li>
+        <li>
+          <img src={img('hiring.svg')} alt="" width="64" height="64" loading="lazy" />
+          <p>Vaikka saavutimme taloudellisen vakauden haastavassa tilanteessa, koin, että olisin voinut tehdä enemmän pitkän aikavälin ratkaisujen eteen yhteen perusongelmaan: <strong>palkattua henkilökuntaa ei ollut tarpeeksi</strong>. Yksi tapa rahoittaa lisähenkilökuntaa olisi ollut hintojen nostaminen. Sitä oli lopulta vaikea myydä hallitukselle, jolla oli vahvoja aatteellisia tavoitteita yhdistykselle. Tämän vuoksi lankesin ehdottomasti suomalaiseen ”kyllä minä tämän itse hoidan” -ajatteluun, ja uskon, että se <em>kavensi näkökulmaani</em>. (Voin kuitenkin iloisena kertoa, että pohjatyö, jonka tein toiminnan rajojen näkyväksi tekemiseksi uusien raportointikäytäntöjen avulla, auttoi vuoden 2018 hallitusta päättämään hintojen huomattavasta tarkistamisesta vuoden 2019 alusta.)</p>
+        </li>
+        <li>
+          <img src={img('planning.svg')} alt="" width="64" height="64" loading="lazy" />
+          <p>Kaventuneen näkökulmani takia en pystynyt keskittymään <strong>ennakoivaan suunnitteluun</strong> niin paljon kuin olisin halunnut. Sen sijaan käytin suurimman osan ajastani johtamiseen ja niin sanotusti ”kädet savessa” -työhön. (No, joskus ihan kirjaimellisesti. Kaivoin paljon.)</p>
+        </li>
+      </ul>
+    </div>
+  </Sheet>
+
+  <!-- Luovutus -->
+  <Sheet label="Jatko">
+    <img class="banner" src={img('patron-rooms.jpg')} alt="Huonekummien remontoimia huoneita" width="2500" height="774" loading="lazy" />
+    <div class="block prose">
+      <h2 class="display h2">Sydämen asian luovuttaminen eteenpäin</h2>
+      <p>Vuoden 2016 puolivälissä aloin tuntea, että työni Majatalossa saattoi olla tehty. Suurin osa huoneista oli remontoitu, talous oli vakautettu, dokumentaatio oli hyvässä kunnossa ja yhteisö näytti voivan hyvin. Oli aika alkaa etsiä seuraavaa seikkailua.</p>
+      <p>Mutta miten lähteä kaatamatta aaltoa, jolla paikka nyt surffasi? Yksi suurimmista tavoitteistani oli aina auttaa Majataloa muuttumaan instituutioksi, eikä instituutio saa koskaan nojata yhteen ihmiseen. Sen pitää nojata ihmisyhteisön rakkauteen ja työhön. Onneksi tässä kohtaa kova työni Majatalon prosessien läpinäkyvyyden ja työmme dokumentoinnin eteen alkoi kantaa hedelmää.</p>
+      <p>Kerroin hallitukselle suunnitelmistani hyvissä ajoin. Kahdessa kuukaudessa laadimme strategian uuden toiminnanjohtajan rekrytoimiseksi tilalleni. Helmikuussa 2017 julkaisimme työpaikkailmoituksen, ja se otettiin vastaan suurella kiinnostuksella ja hälinällä. Majatalon verkkotilastoissa näkyy tuolle kuukaudelle valtava piikki (+7500 [+300 %] kävijää, +15 000 [+150 %] sivun katselukertaa), sillä ilmoitus levisi Majatalon laajan tukiverkoston ansiosta melkoisesti.</p>
+      <p>Noin kahdeksan kuukautta sen jälkeen, kun kerroin hallitukselle lähtöaikeistani, meillä oli uusi toiminnanjohtaja. Jäin Majataloon vielä kolmeksi kuukaudeksi mentoroimaan seuraajaani, mikä oli paljon helpompaa edellisten vuosien laajan dokumentaation ja pohjatyön ansiosta. Sen jälkeen jatkoin osa-aikaisesti vielä seitsemän kuukautta. Kävin paikalla pari päivää viikossa varmistamassa, että kaikki sujui, ja viimeistelin muutaman viimeisen remonttiprojektin. Kirjoittaessani tätä vuoden 2019 alussa tuen edelleen etänä WhatsAppin kautta, kun kysymyksiä tai uusia tilanteita tulee vastaan.</p>
+
+      <h3 class="display h3">P.S.</h3>
+      <p>Viiden vuoden pestiin kuuluu tietysti paljon enemmän kuin mitä olen näiden viiden otsikon alle kirjoittanut. Jotta tämä työnäyte pysyisi hallittavana, jouduin jättämään pois monia isompia ja pienempiä asioita. Toiminnanjohtajan työhön kuuluu kuitenkin paljon tylsiä asioita, jotka eivät kiinnosta ketään. :D Tässä muutamia asioita, jotka jätin raportistani pois:</p>
+      <ul class="bullets">
+        <li>Kunnan viranomaisten edellyttämät muutokset (paloturvallisuus-, terveys- ja hygienia-, ympäristö- ja rakennusmääräykset)</li>
+        <li>Kaikki muutokset, jotka arvonlisäveroraportointi, uusi kirjanpitojärjestelmä sekä osakkeiden ja osakasluettelon tarkistaminen ja päivittäminen toivat mukanaan</li>
+        <li>Sadat pienet remontti-, siivous- ja rakennusprojektit sisällä ja ulkona</li>
+        <li>Lukemattomat pienet graafiset tehtävät osakekirjoista käyntikortteihin ja esitteisiin</li>
+      </ul>
+      <p><strong>Jos haluat kuulla näistä lisää, kerron niistä mielelläni kasvokkain.</strong></p>
+
+      <h3 class="display h3">Keskeneräiset unelmat</h3>
+      <p>Sitten on vielä keskeneräiset projektit ja tulevaisuuden suunnitelmat, jotka seuraajani otti hoitaakseen. Isoja suunnitelmia oli monia, joiden toteuttamiseen en vain vielä ehtinyt.</p>
+      <figure class="figure">
+        <img src={img('kitchen-plans.jpg')} alt="Keittiön pohjapiirrossuunnitelma" width="700" height="477" loading="lazy" />
+      </figure>
+      <p>Yksi esimerkki on varojen kerääminen Majatalon sydämen, yhteisen keittiön, remonttiin. Tein pohjapiirroksia ja suunnitelmia, joissa työnkulut oli optimoitu tälle ainutlaatuiselle, voittoa tavoittelemattoman yhteisön kodinomaiselle puoliammattimaiselle keittiölle, joka eroaa tavallisista koti- tai ravintolakeittiöistä. Mutta noh, ehkä joskus tulevaisuudessa ;)</p>
+    </div>
+    <ul class="gallery">
+      {Array.from({ length: 10 }, (_, i) => String(i + 1).padStart(2, '0')).map((n) => (
+        <li><a href={img(`loppukuva-${n}.jpg`)} data-fancybox="gallery" class="zoom" aria-label={`Avaa kuva ${Number(n)} / 10`}><img src={img(`loppukuva-${n}.jpg`)} alt="" width="900" height="1160" loading="lazy" /></a></li>
+      ))}
+    </ul>
+    <p class="credits">
+      Kiitos monista tämän työnäytteen kuvista kuuluu <a href="https://www.flickr.com/photos/-virta-" target="_blank" rel="noopener">Frans Ojalalle</a>
+      ja <a href="https://www.instagram.com/give.wave/" target="_blank" rel="noopener">Anna Aallolle</a>.
+    </p>
+  </Sheet>
+
+  <ContactSheet />
+</PortfolioLayout>
+
+<script>
+  // Image swap toggles (floor plan years, before/after photos).
+  document.querySelectorAll<HTMLButtonElement>('[data-swap-target]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.swapTarget!) as HTMLImageElement | null;
+      if (!target || !btn.dataset.src) return;
+      target.src = btn.dataset.src;
+      target.alt = btn.dataset.alt ?? '';
+      // Keep the lightbox link in sync with the visible image
+      const link = target.closest<HTMLAnchorElement>('a[data-fancybox]');
+      if (link) link.href = btn.dataset.src;
+      const group = btn.closest('[data-swap-group]');
+      group?.querySelectorAll('[data-swap-target]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b === btn)),
+      );
+    });
+  });
+</script>
+
+<style>
+  /* Images that open in fancyBox */
+  .zoom { display: block; cursor: zoom-in; }
+  .zoom img { transition: opacity 0.15s ease; }
+  .zoom:hover img { opacity: 0.9; }
+  .zoom:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+  /* Shared case-page bits */
+  .back {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px var(--pad);
+    border-bottom: var(--line);
+    font-size: 16px;
+  }
+  .back a { text-decoration: none; }
+  .back a:hover { color: var(--plum); }
+  .back__brand { display: flex; align-items: center; }
+  .back__brand img { display: block; width: 40px; height: 40px; }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 120px var(--pad) 48px;
+    border-bottom: var(--line);
+  }
+  .intro__num { color: var(--plum); }
+  .intro__title { font-size: clamp(48px, 9vw, 128px); line-height: 0.92; color: var(--orange); }
+  .intro__lead { display: flex; flex-direction: column; gap: 16px; max-width: 760px; font-size: 19px; line-height: 30px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { font-size: 16px; line-height: 1.2; padding: 7px 14px; border: var(--line); border-radius: 999px; }
+
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .facts__col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 32px var(--pad);
+    border-right: var(--line);
+    line-height: 26px;
+  }
+  .facts__col:last-child { border-right: none; }
+  .facts__col .label { color: var(--plum); }
+
+  /* Layout blocks */
+  .banner { display: block; width: 100%; height: auto; border-bottom: var(--line); }
+  .block { padding: 40px var(--pad); }
+  .block--flush { padding-top: 0; }
+  .block--line { border-top: var(--line); }
+  .kicker { color: var(--plum); margin-bottom: 8px; }
+  .h2 { font-size: clamp(36px, 5vw, 64px); line-height: 1; margin-bottom: 8px; }
+  .h3 { font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; margin: 8px 0 4px; }
+
+  .prose { display: flex; flex-direction: column; gap: 16px; line-height: 28px; font-size: 17px; }
+  .prose > * { max-width: 720px; }
+  .prose--wide > * { max-width: 960px; }
+  .prose a, .side a, .figure a, .photo-links a, .credits a, .acc a { color: var(--plum); }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 48px;
+    padding: 40px var(--pad);
+    align-items: start;
+  }
+  .split--top { padding-top: 0; }
+  .split.block--line { padding-top: 40px; }
+  .split--plan { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+
+  .box { padding: 28px; display: flex; flex-direction: column; gap: 14px; line-height: 26px; }
+  .box--plum { background: var(--plum); color: var(--paper); }
+  .box--plum .label { color: var(--plum-soft); }
+
+  .side { display: flex; flex-direction: column; gap: 16px; line-height: 26px; }
+  .numbered { counter-reset: n; display: flex; flex-direction: column; gap: 12px; }
+  .numbered li {
+    counter-increment: n;
+    position: relative;
+    padding: 16px 16px 16px 60px;
+    border: var(--line);
+  }
+  .numbered li::before {
+    content: counter(n, decimal-leading-zero);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--orange);
+  }
+
+  .centered-title {
+    text-align: center;
+    font-size: clamp(22px, 3vw, 34px);
+    line-height: 1.1;
+    padding: 32px var(--pad);
+    border-top: var(--line);
+    border-bottom: var(--line);
+  }
+  .centered-title span { color: var(--plum); }
+
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; }
+  .col { display: flex; flex-direction: column; gap: 12px; padding: 32px var(--pad); }
+  .col:first-child { border-right: var(--line); }
+
+  .bullets { display: flex; flex-direction: column; gap: 8px; line-height: 26px; }
+  .bullets > li { position: relative; padding-left: 22px; }
+  .bullets > li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .bullets ul { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; color: var(--muted); }
+  .bullets ul li::before { content: '– '; }
+  .bullets--box { padding: 24px; background: var(--page); }
+
+  .figure { display: flex; flex-direction: column; gap: 8px; }
+  .figure img { display: block; width: 100%; height: auto; border: var(--line); }
+  .figure--plain img { border: none; }
+  .figure figcaption { font-size: 16px; line-height: 24px; color: var(--muted); }
+
+  /* Accordions */
+  .acc { border-top: var(--line); }
+  .acc:last-child { border-bottom: var(--line); }
+  .acc summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    font-weight: 700;
+    line-height: 26px;
+  }
+  .acc summary::-webkit-details-marker { display: none; }
+  .acc summary::after {
+    content: '+';
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+    color: var(--orange);
+    font-size: 20px;
+    line-height: 1;
+  }
+  .acc[open] summary::after { content: '−'; background: var(--orange); color: var(--paper); }
+  .acc summary:hover { color: var(--plum); }
+  .acc > p, .acc > .acc__media, .acc > .ba { margin-bottom: 16px; }
+  .acc > p { line-height: 28px; max-width: 760px; }
+  .acc__media { display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: start; line-height: 28px; }
+  .acc__media img { width: 100%; height: auto; display: block; }
+
+  /* Strengths */
+  .strengths { display: flex; flex-direction: column; }
+  .strength {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    padding: 32px var(--pad);
+    border-bottom: var(--line);
+    align-items: start;
+  }
+  .strength:last-child { border-bottom: none; }
+  .strength img { width: 100%; height: auto; display: block; }
+
+  /* Image toggles */
+  .toggle { display: flex; flex-wrap: wrap; gap: 6px; }
+  .toggle button {
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border: 1px solid var(--plum);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--plum);
+    cursor: pointer;
+  }
+  .toggle button:hover { background: var(--plum-soft); }
+  .toggle button[aria-pressed='true'] { background: var(--plum); color: var(--paper); }
+  .toggle button:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .plan { display: flex; flex-direction: column; gap: 16px; }
+  .plan img { width: 100%; height: auto; display: block; border: var(--line); }
+  .legend { display: flex; flex-direction: column; gap: 6px; }
+  .legend li { display: flex; align-items: center; gap: 10px; }
+
+  .ba { position: relative; }
+  .ba img { width: 100%; height: auto; display: block; }
+  .toggle--overlay { position: absolute; right: 12px; bottom: 12px; }
+  .ba--tall { max-height: 900px; overflow: auto; border: var(--line); }
+  .ba--tall .toggle--overlay { position: sticky; bottom: 12px; justify-content: flex-end; padding-right: 12px; margin-top: -48px; }
+
+  .photo-links { font-size: 16px; color: var(--muted); }
+
+  /* Quotes */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--line); border-bottom: var(--line); }
+  .quote {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px var(--pad);
+    border-right: var(--line);
+  }
+  .quote:last-child { border-right: none; }
+  .quote--plum { background: var(--plum); color: var(--paper); }
+  .quote__mark { font-family: var(--font-display); font-size: 80px; line-height: 0.6; height: 32px; }
+  .quote blockquote { margin: 0; flex-grow: 1; line-height: 27px; }
+  .quote__person { display: flex; align-items: center; gap: 14px; padding-top: 16px; border-top: 1px dashed currentColor; }
+  .quote__person img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; filter: grayscale(1); flex-shrink: 0; }
+  .quote__role { color: var(--muted); }
+  .quote--plum .quote__role { color: var(--plum-soft); }
+
+  /* Stats */
+  .table-wrap { overflow-x: auto; margin-top: 16px; }
+  .table-wrap:focus-visible { outline: 2px solid var(--orange); }
+  .stats { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 16px; }
+  .stats th, .stats td { padding: 12px 14px; text-align: left; border-bottom: var(--line); vertical-align: top; }
+  .stats thead th { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; color: var(--plum); }
+  .stats tbody th { font-weight: 600; width: 26%; }
+  .stats__total { font-weight: 800; color: var(--plum); white-space: nowrap; }
+  .stat-notes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 24px; line-height: 24px; }
+  .stat-notes dt { color: var(--plum); margin-bottom: 6px; }
+  .stat-notes dd { margin: 0 0 4px; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  .learned { display: flex; flex-direction: column; gap: 24px; margin-top: 16px; }
+  .learned li { display: grid; grid-template-columns: 64px 1fr; gap: 24px; align-items: start; line-height: 28px; max-width: 960px; }
+
+  .gallery { display: grid; grid-template-columns: repeat(5, 1fr); border-top: var(--line); }
+  .gallery img { display: block; width: 100%; height: auto; }
+  .credits { padding: 24px var(--pad); text-align: center; color: var(--muted); border-top: var(--line); }
+
+  @media (max-width: 1100px) {
+    .quotes { grid-template-columns: 1fr; }
+    .quote { border-right: none; border-bottom: var(--line); }
+    .quote:last-child { border-bottom: none; }
+    .stat-notes { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    .intro { padding-top: 56px; }
+    .facts, .cols2, .split, .split--plan { grid-template-columns: 1fr; }
+    .facts__col { border-right: none; border-bottom: var(--line); }
+    .facts__col:last-child { border-bottom: none; }
+    .col:first-child { border-right: none; border-bottom: var(--line); }
+    .split { gap: 32px; }
+    .strength, .acc__media { grid-template-columns: 1fr; gap: 20px; }
+    .strength img { max-width: 360px; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .stat-notes { grid-template-columns: 1fr; }
+    .learned li { grid-template-columns: 48px 1fr; gap: 16px; }
+    .learned img { width: 48px; height: 48px; }
+  }
+</style>

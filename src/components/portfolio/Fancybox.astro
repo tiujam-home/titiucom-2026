@@ -1,0 +1,38 @@
+---
+/**
+ * fancyBox v3.5.6 lightbox (same as titiu.com), with jQuery 3.4.1.
+ * Files live in /public/vendor. Use inside PortfolioLayout with slot="head":
+ *   <Fancybox slot="head" />
+ * Then any <a data-fancybox="group" href="big.jpg"> opens in the lightbox;
+ * links with the same group name form a gallery.
+ */
+---
+
+<link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.min.css" />
+<script is:inline src="/vendor/jquery-3.4.1.min.js"></script>
+<script is:inline src="/vendor/fancybox/jquery.fancybox.min.js"></script>
+<script is:inline>
+  // Same tweak as titiu.com: fancyBox zooms to the image's own width, which for
+  // big images is wider than the screen. Cap it at the viewport width.
+  $.fancybox.defaults.afterLoad = function (instance, current) {
+    var maxWidth = document.documentElement.clientWidth;
+    if (current.type === 'image' && current.width > maxWidth) {
+      current.height = Math.round((current.height * maxWidth) / current.width);
+      current.width = maxWidth;
+    }
+  };
+  $.fancybox.defaults.lang = 'fi';
+  $.fancybox.defaults.i18n.fi = {
+    CLOSE: 'Sulje',
+    NEXT: 'Seuraava',
+    PREV: 'Edellinen',
+    ERROR: 'Sisältöä ei voitu ladata. <br/> Yritä myöhemmin uudelleen.',
+    PLAY_START: 'Käynnistä diaesitys',
+    PLAY_STOP: 'Pysäytä diaesitys',
+    FULL_SCREEN: 'Koko näyttö',
+    THUMBS: 'Pienoiskuvat',
+    DOWNLOAD: 'Lataa',
+    SHARE: 'Jaa',
+    ZOOM: 'Zoomaa',
+  };
+</script>
