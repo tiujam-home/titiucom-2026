@@ -21,8 +21,8 @@ const links = [
 
   <div class="hero">
     <div class="hero__title">
-      <p class="label hero__hello">Hei, olen</p>
-      <h1 class="display hero__name"><a href="#tutustutaan">Titiu<br />Rajanto.</a></h1>
+      <p class="label hero__hello"><span class="hero__hello-text">Heips! Olen</span></p>
+      <h1 class="display hero__name"><a href="#tutustutaan"><span class="hero__first">Titiu</span><br />Rajanto.</a></h1>
     </div>
     <div class="hero__side">
       <p class="label">UI/UX-suunnittelija ja front-end-kehittäjä</p>
@@ -71,12 +71,18 @@ const links = [
     gap: 40px;
     padding: 160px var(--pad) 48px;
   }
+  /* The script scales this so the text is exactly as wide as "Titiu" below it;
+     the clamp() is the fallback before fonts load or without JS */
   .hero__hello {
-    font-size: 16px;
-    letter-spacing: 0.18em;
+    font-size: clamp(20px, 2.2vw, 32px);
+    letter-spacing: 0.14em;
+    line-height: 1.1;
     color: var(--plum);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    white-space: nowrap;
   }
+  /* Cancel the letter-spacing after the last letter so the measured width is the visible width */
+  .hero__hello-text { margin-right: -0.14em; }
   .hero__name {
     font-size: clamp(56px, 10.5vw, 150px);
     line-height: 0.9;
@@ -146,6 +152,26 @@ const links = [
 </style>
 
 <script>
+  // Size "Heips! Olen" so it is exactly as wide as "Titiu". Width scales linearly with
+  // font-size (letter-spacing is in em), so one measurement is enough.
+  const hello = document.querySelector<HTMLElement>('.hero__hello');
+  const helloText = document.querySelector<HTMLElement>('.hero__hello-text');
+  const first = document.querySelector<HTMLElement>('.hero__first');
+  if (hello && helloText && first) {
+    const fitHello = () => {
+      hello.style.fontSize = '';
+      const target = first.getBoundingClientRect().width;
+      const current = helloText.getBoundingClientRect().width;
+      if (!target || !current) return;
+      const size = parseFloat(getComputedStyle(hello).fontSize);
+      hello.style.fontSize = `${(size * target) / current}px`;
+    };
+    fitHello();
+    document.fonts?.ready.then(fitHello);
+    // Observe the block-level h1: ResizeObserver does not report inline elements
+    new ResizeObserver(fitHello).observe(first.closest("h1") ?? first);
+  }
+
   // Scrollspy: highlight the nav link of the section currently under the
   // sticky nav (same logic as titiu.com, without jQuery).
   const nav = document.querySelector<HTMLElement>('[data-scrollspy]');
