@@ -361,10 +361,15 @@ const projects: Project[] = [
       </div>
       <ul class="tags">{item.tags.map((t) => <li>{t}</li>)}</ul>
     </header>
-    <nav class="toc" aria-label="Siirry projektiin">
-      {projects.map((p) => <a href={`#${p.id}`}>{p.toc}</a>)}
-    </nav>
   </Sheet>
+
+  <!-- Sticky project navigation: a direct child of .page so it stays pinned for the whole page -->
+  <nav class="toc" aria-label="Siirry projektiin">
+    <a href="/" class="toc__brand" aria-label="Titiu Rajanto – etusivulle"><img src="/img/tiu-logo.svg" alt="" width="32" height="32" /></a>
+    <div class="toc__links">
+      {projects.map((p) => <a href={`#${p.id}`}>{p.toc}</a>)}
+    </div>
+  </nav>
 
   {projects.map((p) => (
     <Sheet label={p.toc} id={p.id}>
@@ -470,6 +475,46 @@ const projects: Project[] = [
 </PortfolioLayout>
 
 <script>
+  // Sticky nav: offset anchor jumps by the bar's height and highlight the project in view
+  const toc = document.querySelector<HTMLElement>('.toc');
+  if (toc) {
+    const setNavHeight = () => document.documentElement.style.setProperty('--nav-h', `${toc.offsetHeight}px`);
+    setNavHeight();
+    window.addEventListener('resize', setNavHeight);
+
+    const links = new Map<string, HTMLAnchorElement>();
+    toc.querySelectorAll<HTMLAnchorElement>('.toc__links a').forEach((a) => links.set(a.hash.slice(1), a));
+    const setActive = (id: string | null) => {
+      links.forEach((a, key) => {
+        if (key === id) {
+          a.setAttribute('aria-current', 'true');
+          a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    };
+    const sections = [...links.keys()].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    const update = () => {
+      const line = toc.offsetHeight + 40;
+      let current: string | null = null;
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= line) current = s.id;
+      }
+      const last = sections[sections.length - 1];
+      if (current && last && last.getBoundingClientRect().bottom < line) current = null;
+      setActive(current);
+    };
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => { update(); ticking = false; });
+      }
+    }, { passive: true });
+    update();
+  }
+
   // Fade images in as they scroll into view
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduce && 'IntersectionObserver' in window) {
@@ -514,7 +559,6 @@ const projects: Project[] = [
     flex-direction: column;
     gap: 24px;
     padding: 120px var(--pad) 48px;
-    border-bottom: var(--line);
   }
   .intro__num { color: var(--plum); }
   .intro__title { font-size: clamp(44px, 8vw, 112px); line-height: 0.92; color: var(--orange); }
@@ -522,8 +566,22 @@ const projects: Project[] = [
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
   .tags li { font-size: 16px; line-height: 1.2; padding: 7px 14px; border: var(--line); border-radius: 999px; }
 
-  .toc { display: flex; flex-wrap: wrap; gap: 8px; padding: 24px var(--pad); }
-  .toc a {
+  /* Sticky project nav: its own card between the intro and the first project, pinned to the top when scrolling */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px var(--pad);
+    background: var(--paper);
+    border: var(--line);
+  }
+  .toc__brand { flex-shrink: 0; display: flex; }
+  .toc__brand img { display: block; width: 32px; height: 32px; }
+  .toc__links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc__links a {
     font-size: 16px;
     font-weight: 700;
     padding: 6px 14px;
@@ -531,8 +589,10 @@ const projects: Project[] = [
     border-radius: 999px;
     color: var(--plum);
     text-decoration: none;
+    white-space: nowrap;
   }
-  .toc a:hover { background: var(--plum); color: var(--paper); }
+  .toc__links a:hover,
+  .toc__links a[aria-current='true'] { background: var(--plum); color: var(--paper); }
 
   /* Project header band */
   .proj-head {
@@ -653,7 +713,17 @@ const projects: Project[] = [
     .sub__title { font-size: 24px; }
     .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
     .stat b { font-size: 30px; }
-    .toc a { padding: 9px 14px; }
+    /* One scrollable row on phones so the bar doesn't eat half the screen */
+    .toc { gap: 12px; padding: 8px var(--pad); }
+    .toc__links {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-right: calc(var(--pad) * -1);
+      padding-right: var(--pad);
+    }
+    .toc__links::-webkit-scrollbar { display: none; }
+    .toc__links a { padding: 9px 14px; }
     .quote__person a { display: inline-block; padding: 8px 0; }
     .visit { padding: 12px 20px; }
   }
