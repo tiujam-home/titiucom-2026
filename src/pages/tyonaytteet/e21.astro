@@ -482,13 +482,21 @@ const projects: Project[] = [
     setNavHeight();
     window.addEventListener('resize', setNavHeight);
 
+    const row = toc.querySelector<HTMLElement>('.toc__links');
     const links = new Map<string, HTMLAnchorElement>();
     toc.querySelectorAll<HTMLAnchorElement>('.toc__links a').forEach((a) => links.set(a.hash.slice(1), a));
+    let activeId: string | null | undefined;
     const setActive = (id: string | null) => {
+      if (id === activeId) return;
+      activeId = id;
       links.forEach((a, key) => {
         if (key === id) {
           a.setAttribute('aria-current', 'true');
-          a.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          // Only scroll the button row sideways (phones). scrollIntoView would also move the page.
+          if (row && row.scrollWidth > row.clientWidth) {
+            const target = a.offsetLeft - (row.clientWidth - a.offsetWidth) / 2;
+            row.scrollTo({ left: target, behavior: 'smooth' });
+          }
         } else {
           a.removeAttribute('aria-current');
         }
@@ -580,7 +588,7 @@ const projects: Project[] = [
   }
   .toc__brand { flex-shrink: 0; display: flex; }
   .toc__brand img { display: block; width: 32px; height: 32px; }
-  .toc__links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc__links { position: relative; display: flex; flex-wrap: wrap; gap: 8px; }
   .toc__links a {
     font-size: 16px;
     font-weight: 700;
@@ -659,7 +667,8 @@ const projects: Project[] = [
     border-radius: 50%;
     background: var(--orange);
   }
-  .media { position: sticky; top: 24px; }
+  /* Stick below the sticky project nav (--nav-h is set by the script from the bar's real height) */
+  .media { position: sticky; top: calc(var(--nav-h, 74px) + 24px); }
   .media img, .media video { display: block; width: 100%; height: auto; border: var(--line); }
   .media--logo img { border: none; max-width: 360px; margin: 0 auto; }
 
