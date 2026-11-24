@@ -7,7 +7,6 @@ import { keepCase } from '../../utils/keepCase';
 <Sheet label="Työnäytteet" id="tyonaytteet">
   <div class="work__head">
     <h2 class="display work__title">Työnäytteet</h2>
-    <p class="work__aside">(teot puhuvat puolestaan)</p>
   </div>
   <ul class="work__list">
     {cases.map((c, i) => (
@@ -33,7 +32,6 @@ import { keepCase } from '../../utils/keepCase';
     border-bottom: var(--line);
   }
   .work__title { font-size: 64px; }
-  .work__aside { font-weight: 500; }
 
   .work__list li { border-bottom: var(--line); }
   .work__list li:last-child { border-bottom: none; }
