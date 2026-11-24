@@ -11,11 +11,11 @@ import { keepCase } from '../../utils/keepCase';
   <ul class="work__list">
     {cases.map((c, i) => (
       <li>
-        <a href={`/tyonaytteet/${c.slug}`} class:list={['case', { 'case--featured': i === 1 }]}>
+        <a href={`/tyonaytteet/${c.slug}`} class:list={['case', { 'case--featured': c.slug === 'e21' }]}>
           <span class="case__num">{String(i + 1).padStart(2, '0')}</span>
           <span class="display case__title" set:html={keepCase(c.title)} />
           <span class="case__tags">{c.tags.join(' · ')}</span>
-          <span class:list={['circle', { 'circle--filled': i === 1 }]} aria-hidden="true">→</span>
+          <span class:list={['circle', { 'circle--filled': c.slug === 'e21' }]} aria-hidden="true">→</span>
         </a>
       </li>
     ))}
