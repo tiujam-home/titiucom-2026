@@ -145,6 +145,8 @@ const links = [
       gap: 32px;
     }
     .hero__side { width: 100%; }
+    /* The sticky nav overlaps this sheet's top border, so give the "Portfolio" label bar more room above it */
+    :global(#alkuun > .sheet__rail) { padding-top: 22px; padding-bottom: 14px; }
   }
   @media (max-width: 380px) {
     .hero__name { font-size: 14vw; }
